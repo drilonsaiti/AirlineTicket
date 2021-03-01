@@ -5,7 +5,7 @@ import airlanetickets.model.Reservation;
 
 public interface ReservationService {
 
-    Reservation create(String name, String surname, String numberOfPass,String numberPhone,ClassesType type);
+    Reservation create(String name, String surname, String numberOfPass,String numberPhone,int baggingPrice,ClassesType type);
 
     Long getIdReservation();
 

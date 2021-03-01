@@ -105,7 +105,8 @@
                         <td  th:text="${order.getReservation().getName()}"></td>
                         <td  th:text="${order.getReservation().getSurname()}"></td>
                         <td  th:text="${order.getPayment().encodeCardNumber(order.getPayment().getCardNumber())}"></td>
-                        <td th:text="${order.getFlight().getFinalPrice(order.getReservation().getClassesType())}"></td>
+                        <td th:text="${order.getFlight().getFinalPrice(order.getReservation().getClassesType()) +
+                                        order.getReservation().getBaggingPrice()}"></td>
                         <td>
                         <form th:action="@{'/ticket-cart/{id}/download' (id=${order.getId()})}"
                               th:method="GET" th:if="${order.canDownload(order.getFlight().getDeparatureTime())}">

@@ -60,8 +60,8 @@ public class ReservationController {
                                     @RequestParam String numberOfPhone,
                                     @RequestParam ClassesType type,
                                     @RequestParam(required = false) String bagging){
-
-        Long id  = this.reservationService.create(nameOfCust,surOfCust,numofPass,countryCode+numberOfPhone,type).getId();
+        int baggingPrice = bagging != null ? Integer.parseInt(bagging) : 0;
+        Long id  = this.reservationService.create(nameOfCust,surOfCust,numofPass,countryCode+numberOfPhone,baggingPrice,type).getId();
         req.getSession().setAttribute("idReservation",id);
         req.getSession().setAttribute("bagging",bagging);
         return "redirect:/payment";

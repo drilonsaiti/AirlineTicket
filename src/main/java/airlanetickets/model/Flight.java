@@ -58,14 +58,12 @@ public class Flight {
     public double getFinalPrice(ClassesType type){
 
         if (type == ClassesType.ECONOMY_CLASS){
-            this.finalPrice =  this.price;
+            return this.price;
         }else if (type == ClassesType.BUSINESS_CLASS){
-            this.finalPrice = this.price * 8.5;
+            return this.price * 8.5;
         }else{
-            this.finalPrice =  this.price * 4.5;
+            return  this.price * 4.5;
         }
-
-        return finalPrice;
     }
 
     public double getFinalPrices(){

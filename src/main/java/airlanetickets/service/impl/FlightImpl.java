@@ -40,6 +40,7 @@ public class FlightImpl implements FlightService {
 
     @Override
     public List<Flight> listAll() {
+        this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
         return this.flightRepository.findAll().stream().filter(f -> f.cantShow())
                 .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
     }
@@ -85,6 +86,15 @@ public class FlightImpl implements FlightService {
     }
 
     @Override
+    public void deleteExpDateAndNoAvbSeats(List<Flight> flights) {
+        List<Flight> flightFilter = flights.stream()
+                .filter(f -> !f.cantShow() && f.getTotal_seats() == 0).collect(Collectors.toList());
+        for (Flight flight : flightFilter){
+            this.flightRepository.delete(flight);
+        }
+    }
+
+    @Override
     public Flight delete(Long id) {
         Flight flight = this.findById(id);
 
@@ -95,6 +105,8 @@ public class FlightImpl implements FlightService {
 
     @Override
     public List<Flight> listByFromAndToAndDeptTime(String fromSearch, String toSearch, String deptSearch) {
+        this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
+
         String fromLike = "%" + fromSearch + "%";
         String toLike = "%" + toSearch + "%";
         String deptTime = "";
@@ -110,7 +122,9 @@ public class FlightImpl implements FlightService {
         String deptLike = "%" + deptTime + "%";
 
        if (fromSearch != null && toSearch != null && deptSearch != null){
-            return this.flightRepository.findAllByFromLocationLikeAndToLocationLikeAndDeparatureTimeLike(fromLike,toLike,deptLike);
+            return this.flightRepository.findAllByFromLocationLikeAndToLocationLikeAndDeparatureTimeLike(fromLike,toLike,deptLike)
+                    .stream().filter(f -> f.cantShow())
+                    .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
         }else if(fromSearch != null && toSearch != null){
             return this.flightRepository.findAllByFromLocationLikeAndToLocationLike(fromLike,toLike)
                     .stream().filter(f -> f.cantShow())
@@ -136,7 +150,7 @@ public class FlightImpl implements FlightService {
                     .stream().filter(f -> f.cantShow())
                     .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
         }else{
-            return this.flightRepository.findAll();
+            return this.listAll();
         }
     }
 }

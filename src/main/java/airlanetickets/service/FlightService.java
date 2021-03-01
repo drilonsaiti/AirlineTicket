@@ -22,5 +22,7 @@ public interface FlightService {
 
      Flight updateSeats(Long id,int seats);
 
+     void deleteExpDateAndNoAvbSeats(List<Flight> flights);
+
 
     }

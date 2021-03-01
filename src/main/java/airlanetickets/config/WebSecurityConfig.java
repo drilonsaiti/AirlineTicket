@@ -27,7 +27,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**","/vendor/**","/fonts/**","/scss/**","/Travel - Doc/**");
+                .antMatchers("/resources/**", "/static/**",
+                        "/css/**", "/js/**", "/img/**","/vendor/**","/fonts/**",
+                        "/scss/**","/Travel - Doc/**", "/assets/**");
     }
 
     @Override
@@ -35,7 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**","/vendor/**","/fonts/**","/scss/**","/Travel - Doc/**").permitAll()
+                .antMatchers("/resources/**", "/static/**", "/css/**",
+                        "/js/**", "/img/**","/vendor/**","/fonts/**","/scss/**","/Travel - Doc/**", "/assets/**","/api/**","pdflogo.png").permitAll()
                 .antMatchers("/flights","/register","**/resources/**").permitAll()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/*.js").permitAll()

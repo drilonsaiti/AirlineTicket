@@ -20,8 +20,8 @@ public class ReservationImpl implements ReservationService {
     }
 
     @Override
-    public Reservation create(String name, String surname, String numberOfPass, String numberPhone, ClassesType type) {
-        Reservation reservation = new Reservation(name,surname,numberOfPass,numberPhone,type);
+    public Reservation create(String name, String surname, String numberOfPass, String numberPhone,int baggingPrice, ClassesType type) {
+        Reservation reservation = new Reservation(name,surname,numberOfPass,numberPhone,baggingPrice,type);
         this.idReservation = reservation.getId();
         return reservationRepository.save(reservation);
     }
