@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <script>
+        // This is an old version, for a more recent version look at
+        // https://jsfiddle.net/DRSDavidSoft/zb4ft1qq/2/
+        function maxLengthCheck(object) {
+            if (object.value.length > object.maxLength)
+                object.value = object.value.slice(0, object.maxLength)
+        }
+    </script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/home">Airline Tickets mkdAir</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+            <ul class="navbar-nav m-auto">
+                <li class="nav-item m-auto">
+                    <a class="nav-link active" href="/home">Home</a>
+                </li>
+                <li class="nav-item m-auto">
+                    <a class="nav-link active" href="/flights">Flights</a>
+                </li>
+                <li class="nav-item m-auto">
+                    <a class="nav-link active" href="/agencies">Agency</a>
+                </li>
+                <li class="nav-item m-auto">
+                    <a class="nav-link active" href="/airplanes">Airplane</a>
+                </li>
+            </ul>
+
+            <form class="form-inline my-2 my-lg-0">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                           placeholder="Search...">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-secondary btn-number">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <a class="btn btn-success btn-sm ml-3" href="/shopping-cart">
+                    <i class="fa fa-shopping-cart"></i> Cart
+                </a>
+                <a class="btn btn-light btn-sm ml-3" href="/logout">
+                    <i class="fa fa-shopping-cart"></i> Logout
+                </a>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container mb-4">
+    <h2>Details of Ticket</h2>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">From</th>
+                        <th scope="col">To</th>
+                        <th scope="col">Departure Time</th>
+                        <th scope="col">Arrival ime</th>
+
+                        <th scope="col">Name</th>
+                        <th scope="col">Surname</th>
+
+                        <th scope="col">Card number</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Download</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${orders}">
+
+                        <td th:text="${order.getFlight().getFromLocation()}"></td>
+                        <td th:text="${order.getFlight().getToLocation()}"></td>
+                        <td th:text="${order.getFlight().getDeparatureTime()}"></td>
+                        <td th:text="${order.getFlight().getArrival_time()}"></td>
+                        <td  th:text="${order.getReservation().getName()}"></td>
+                        <td  th:text="${order.getReservation().getSurname()}"></td>
+                        <td  th:text="${order.getPayment().encodeCardNumber(order.getPayment().getCardNumber())}"></td>
+                        <td th:text="${order.getFlight().getFinalPrice(order.getReservation().getClassesType())}"></td>
+                        <td>
+                        <form th:action="@{'/ticket-cart/{id}/download' (id=${order.getId()})}"
+                              th:method="GET" th:if="${order.canDownload(order.getFlight().getDeparatureTime())}">
+                            <button  type="submit" class="btn btn-sm btn-primary delete-balloon"><i
+                                    class="fa fa-download" th:if="${order.canDownload(order.getFlight().getDeparatureTime())}">View and Download</i>
+                            </button>
+                        </form>
+
+                            <form th:action="@{'/ticket-cart/{id}/canceled' (id=${order.getId()})}"
+                                  th:method="POST" th:if="${order.canCancaled(order.getFlight().getDeparatureTime())}">
+                                <button  type="submit" class="btn btn-sm btn-danger delete-balloon"><i
+                                        class="fa fa-trash" th:if="${order.canCancaled(order.getFlight().getDeparatureTime())}">Canceled</i>
+                                </button>
+                            </form>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+        <br/>
+        <a type="button" class="btn btn-primary" href="/flights">Back</a>
+    </form>
+
+    <!-- Footer -->
+    <footer class="text-black-50 mt-xl-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-lg-4 col-xl-3">
+                    <h5>About</h5>
+                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                    <p class="mb-0">
+                        Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant
+                        impression.
+                    </p>
+                </div>
+
+
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto">
+                    <h5>Informations</h5>
+                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                    <ul class="list-unstyled">
+                        <li><a href="">Link 1</a></li>
+                        <li><a href="">Link 2</a></li>
+                        <li><a href="">Link 3</a></li>
+                        <li><a href="">Link 4</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto">
+                    <h5>Others links</h5>
+                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                    <ul class="list-unstyled">
+                        <li><a href="">Link 1</a></li>
+                        <li><a href="">Link 2</a></li>
+                        <li><a href="">Link 3</a></li>
+                        <li><a href="">Link 4</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 col-lg-3 col-xl-3">
+                    <h5>Contact</h5>
+                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-home mr-2"></i> My company</li>
+                        <li><i class="fa fa-envelope mr-2"></i> email@example.com</li>
+                        <li><i class="fa fa-phone mr-2"></i> + 33 12 14 15 16</li>
+                        <li><i class="fa fa-print mr-2"></i> + 33 12 14 15 16</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+
+
+</div>
+</body>
+</html>
