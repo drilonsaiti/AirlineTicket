@@ -5,9 +5,11 @@ import airlanetickets.model.enumerations.ClassesType;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 
 @Data
 @Entity
+@Transactional
 public class Reservation {
 
     @Id

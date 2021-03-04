@@ -3,10 +3,12 @@ package airlanetickets.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Transactional
 @Table(name = "order_table")
 public class Order {
 
@@ -19,7 +21,6 @@ public class Order {
     Flight flight;
 
     @ManyToOne
-
     Reservation reservation;
 
     @ManyToOne

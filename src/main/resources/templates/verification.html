@@ -23,7 +23,6 @@
         .logo{
             width: 182px;
             float: left;
-            margin-top: -33px;
             margin-left: 39px;
         }
         .jumbotron-heading{
@@ -57,17 +56,17 @@
         .type{
             float: right;
             margin-top: -95px;
-            margin-right: 354px;
-        }
+            margin-right: 399px;
+        }        }
         .surname{
             float: right;
             margin-top: -95px;
-            margin-right: 466px;
+            margin-right: 418px;
         }
         .phonenumber{
             float: right;
             margin-top: -95px;
-            margin-right: 387px;
+            margin-right: 337px;
         }
 
         #footer{
@@ -94,7 +93,7 @@
             <div>
                 <section class="jumbotron text-center">
                     <div class="container">
-                        <img class="logo" src="logoticket2.jpg">
+                        <img class="logo" src="/img/mkdAirlogo.png">
                         <h1 class="jumbotron-heading">BOARDING PASS</h1>
                     </div>
                 </section>
@@ -115,7 +114,7 @@
                 <div class="type">
                     <h3>Class type </h3> <p th:text="${order.getReservation().getClassesType()}"></p>
                 </div>
-                <h3>Normal Price</h3> <p th:text= "${order.getFlight().getPrice()}"></p>
+                <h3>Normal Price</h3> <p th:text= "${order.getFlight().getPrice()} + '€'"></p>
                 <div class="line"></div>
                 <h2>PASSENGER DETAILS</h2>
                 <h3>Name</h3> <p th:text="${order.getReservation().getName()}"></p>
@@ -132,7 +131,7 @@
                 <h3>Full Name</h3> <p th:text="${order.getPayment().getFullName()}"></p>
                 <h3>Card Number</h3> <p th:text="${order.getPayment().encodeCardNumber(order.getPayment().getCardNumber())}"></p>
                 <div class="price">
-                    <h3>Final Price</h3> <p th:text="${order.getFlight().getFinalPrice(order.getReservation().getClassesType())} ">
+                    <h3>Final Price</h3> <p th:text="${order.getFlight().getFinalPrice(order.getReservation().getClassesType())} + '€' ">
                 </div>
             </div>
         </div>

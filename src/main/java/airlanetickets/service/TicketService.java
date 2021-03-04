@@ -23,4 +23,6 @@ public interface TicketService {
 
     Ticket findById(Long id);
 
+    void deleteByTicketAndOrderID(Ticket ticket,Long id);
+
     }

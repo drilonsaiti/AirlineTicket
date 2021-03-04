@@ -5,10 +5,13 @@ import airlanetickets.model.enumerations.ClassesType;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Transactional
+
 public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -91,12 +94,16 @@ public class Flight {
         int min = now.getHour() - hour;
         int minday = (day-now.getDayOfMonth()) * 24;
 
-        if (day >= now.getDayOfMonth() && month >= now.getMonth().getValue() && year == now.getYear() && min+minday >= 4) {
+        System.out.println(this.fromLocation + " " + this.toLocation + " hour " + hour + " now hour " + now.getHour() + " now.getHour - hour " + min + " minday " + minday);
+
+        if (day >= now.getDayOfMonth() && month >= now.getMonth().getValue() && year == now.getYear() && min+minday >= 5) {
             return true;
         }
 
         return false;
     }
+
+
 
     public void setTotalSeats(int takeSeats){
         this.total_seats = this.total_seats - takeSeats;

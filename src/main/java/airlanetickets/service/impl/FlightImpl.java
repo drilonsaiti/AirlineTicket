@@ -1,16 +1,12 @@
 package airlanetickets.service.impl;
 
-import airlanetickets.model.Agency;
-import airlanetickets.model.Airplane;
-import airlanetickets.model.Flight;
+import airlanetickets.model.*;
 import airlanetickets.model.exceptions.InvalidFlightIdException;
-import airlanetickets.repository.AgencyRepository;
-import airlanetickets.repository.AirplaneRepository;
-import airlanetickets.repository.FlightRepository;
+import airlanetickets.repository.*;
 import airlanetickets.service.FlightService;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,10 +20,30 @@ public class FlightImpl implements FlightService {
 
     private final AirplaneRepository airplaneRepository;
 
-    public FlightImpl(FlightRepository flightRepository, AgencyRepository agencyRepository, AirplaneRepository airplaneRepository) {
+    private final OrderRepository orderRepository;
+
+    private final TicketRepository ticketRepository;
+
+    public FlightImpl(FlightRepository flightRepository, AgencyRepository agencyRepository, AirplaneRepository airplaneRepository, OrderRepository orderRepository, TicketRepository ticketRepository) {
         this.flightRepository = flightRepository;
         this.agencyRepository = agencyRepository;
         this.airplaneRepository = airplaneRepository;
+        this.orderRepository = orderRepository;
+        this.ticketRepository = ticketRepository;
+    }
+
+    @Override
+    public Page<Flight> findPaginated(int pageNo, int pageSize, String fromSearch, String toSearch, String deptTime) {
+        //this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
+
+        Pageable pageable = PageRequest.of(pageNo-1,pageSize,Sort.by(Sort.Direction.ASC, "deparatureTime"));
+
+        if (fromSearch != null || toSearch != null || deptTime != null){
+            System.out.println("IN IF");
+            return this.listByFromAndToAndDeptTime(fromSearch,toSearch,deptTime,pageable);
+        }
+
+        return this.flightRepository.findAll(pageable);
     }
 
     @Override
@@ -41,8 +57,7 @@ public class FlightImpl implements FlightService {
     @Override
     public List<Flight> listAll() {
         this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
-        return this.flightRepository.findAll().stream().filter(f -> f.cantShow())
-                .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
+        return this.flightRepository.findAll();
     }
 
     @Override
@@ -88,8 +103,12 @@ public class FlightImpl implements FlightService {
     @Override
     public void deleteExpDateAndNoAvbSeats(List<Flight> flights) {
         List<Flight> flightFilter = flights.stream()
-                .filter(f -> !f.cantShow() && f.getTotal_seats() == 0).collect(Collectors.toList());
+                .filter(f -> !f.cantShow() || f.getTotal_seats() == 0).collect(Collectors.toList());
         for (Flight flight : flightFilter){
+            Order order = this.orderRepository.findByFlightId(flight.getId());
+            Ticket ticket = this.ticketRepository.findByOrders(order);
+            this.ticketRepository.delete(ticket);
+            this.orderRepository.delete(order);
             this.flightRepository.delete(flight);
         }
     }
@@ -97,14 +116,17 @@ public class FlightImpl implements FlightService {
     @Override
     public Flight delete(Long id) {
         Flight flight = this.findById(id);
-
+        Order order = this.orderRepository.findByFlightId(id);
+        Ticket ticket = this.ticketRepository.findByOrders(order);
+        this.ticketRepository.delete(ticket);
+        this.orderRepository.delete(order);
         this.flightRepository.delete(flight);
 
         return flight;
     }
 
     @Override
-    public List<Flight> listByFromAndToAndDeptTime(String fromSearch, String toSearch, String deptSearch) {
+    public Page<Flight> listByFromAndToAndDeptTime(String fromSearch, String toSearch, String deptSearch,Pageable pageable) {
         this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
 
         String fromLike = "%" + fromSearch + "%";
@@ -122,35 +144,27 @@ public class FlightImpl implements FlightService {
         String deptLike = "%" + deptTime + "%";
 
        if (fromSearch != null && toSearch != null && deptSearch != null){
-            return this.flightRepository.findAllByFromLocationLikeAndToLocationLikeAndDeparatureTimeLike(fromLike,toLike,deptLike)
-                    .stream().filter(f -> f.cantShow())
-                    .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
+            return this.flightRepository.findAllByFromLocationLikeAndToLocationLikeAndDeparatureTimeLike(fromLike,toLike,deptLike,pageable);
+
         }else if(fromSearch != null && toSearch != null){
-            return this.flightRepository.findAllByFromLocationLikeAndToLocationLike(fromLike,toLike)
-                    .stream().filter(f -> f.cantShow())
-                    .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
+            return this.flightRepository.findAllByFromLocationLikeAndToLocationLike(fromLike,toLike,pageable);
+
         }else if(fromSearch != null && deptSearch != null){
-            return this.flightRepository.findAllByFromLocationLikeAndDeparatureTimeLike(fromLike,deptLike)
-                    .stream().filter(f -> f.cantShow())
-                    .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
+            return this.flightRepository.findAllByFromLocationLikeAndDeparatureTimeLike(fromLike,deptLike,pageable);
+
         }else if(toSearch != null && deptSearch != null){
-            return this.flightRepository.findAllByToLocationLikeAndDeparatureTimeLike(fromLike,deptLike)
-                    .stream().filter(f -> f.cantShow())
-                    .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
+            return  this.flightRepository.findAllByToLocationLikeAndDeparatureTimeLike(fromLike,deptLike,pageable);
+
         }else if(fromSearch != null){
-            return this.flightRepository.findAllByFromLocationLike(fromLike)
-                    .stream().filter(f -> f.cantShow())
-                    .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
+            return  this.flightRepository.findAllByFromLocationLike(fromLike,pageable);
+
         }else if(toSearch != null){
-            return this.flightRepository.findAllByToLocationLike(toLike)
-                    .stream().filter(f -> f.cantShow())
-                    .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
+            return  this.flightRepository.findAllByToLocationLike(toLike,pageable);
+
         }else if(deptSearch != null){
-            return this.flightRepository.findAllByDeparatureTimeLike(deptLike)
-                    .stream().filter(f -> f.cantShow())
-                    .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
+            return this.flightRepository.findAllByDeparatureTimeLike(deptLike,pageable);
         }else{
-            return this.listAll();
+            return (Page<Flight>) this.listAll();
         }
     }
 }

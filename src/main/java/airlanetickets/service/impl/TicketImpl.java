@@ -9,6 +9,7 @@ import airlanetickets.service.OrderService;
 import airlanetickets.service.TicketService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +52,10 @@ public class TicketImpl implements TicketService {
     }
 
 
+    @Override
+    public void deleteByTicketAndOrderID(Ticket ticket, Long id) {
+
+    }
 
     @Override
     public Ticket getActiveTicketCart(String username) {
@@ -66,6 +71,7 @@ public class TicketImpl implements TicketService {
     }
 
     @Override
+    @Transactional
     public Ticket addTicketToTicketCart(String username, Long flightID,Long reservationID,Long paymentID) throws Exception {
         Ticket ticket = this.getActiveTicketCart(username);
 

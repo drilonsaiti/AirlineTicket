@@ -2,14 +2,14 @@ package airlanetickets.service.impl;
 
 import airlanetickets.model.Flight;
 import airlanetickets.model.Order;
+import airlanetickets.model.Ticket;
+import airlanetickets.repository.FlightRepository;
 import airlanetickets.repository.OrderRepository;
+import airlanetickets.repository.TicketRepository;
 import airlanetickets.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,8 +17,15 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository) {
+    private final FlightRepository flightRepository;
+
+    private final TicketRepository ticketRepository;
+
+
+    public OrderServiceImpl(OrderRepository orderRepository, FlightRepository flightRepository, TicketRepository ticketRepository) {
         this.orderRepository = orderRepository;
+        this.flightRepository = flightRepository;
+        this.ticketRepository = ticketRepository;
     }
 
 
@@ -51,8 +58,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order delete(Long id) {
         Order order = this.findById(id);
-
+        Flight flight = this.flightRepository.findById(order.getFlight().getId()).orElseThrow();
+        Ticket ticket = this.ticketRepository.findByOrders(order);
+        this.ticketRepository.delete(ticket);
         this.orderRepository.delete(order);
+        this.flightRepository.delete(flight);
 
         return order;
     }

@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -25,12 +26,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web
-                .ignoring()
-                .antMatchers("/resources/**", "/static/**",
-                        "/css/**", "/js/**", "/img/**","/vendor/**","/fonts/**",
-                        "/scss/**","/Travel - Doc/**", "/assets/**");
+        //Web resources
+        web.ignoring().antMatchers("/css/**");
+        web.ignoring().antMatchers("/scripts/**");
+        web.ignoring().antMatchers("/js/**");
+        web.ignoring().antMatchers("/fonts/**");
+        web.ignoring().antMatchers("/scss/**");
+        web.ignoring().antMatchers("/doc/**");
+
+        web.ignoring().antMatchers("/img/**");
+        web.ignoring().antMatchers("img/**");
+        web.ignoring().antMatchers("css/**");
+        web.ignoring().antMatchers("js/**");
+        web.ignoring().antMatchers("js/vendor/**");
+
+        web.ignoring().antMatchers("fonts/**");
+        web.ignoring().antMatchers("scss/**");
+        web.ignoring().antMatchers("scss/bootstrap/**");
+        web.ignoring().antMatchers("scss/bootstrap/mixins/**");
+        web.ignoring().antMatchers("scss/bootstrap/utilities/**");
+        web.ignoring().antMatchers("scss/theme/**");
+
+        web.ignoring().antMatchers("doc/**");
+        web.ignoring().antMatchers("doc/css/**");
+        web.ignoring().antMatchers("/doc/css/**");
+        web.ignoring().antMatchers("doc/fonts/**");
+        web.ignoring().antMatchers("doc/img/**");
+        web.ignoring().antMatchers("doc/js/**");
+        web.ignoring().antMatchers("doc/syntax-highlighter/**");
+
+        web.ignoring().antMatchers("scripts/**");
+
     }
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -38,8 +67,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/resources/**", "/static/**", "/css/**",
-                        "/js/**", "/img/**","/vendor/**","/fonts/**","/scss/**","/Travel - Doc/**", "/assets/**","/api/**","pdflogo.png").permitAll()
-                .antMatchers("/flights","/register","**/resources/**").permitAll()
+                        "/js/**", "/img/**","/vendor/**","img/**","/fonts/**","/scss/**","/Travel - Doc/**", "/assets/**","/api/**","pdflogo.png","/doc/**","doc/**").permitAll()
+                .antMatchers("/flights/**","/register","**/resources/**").permitAll()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/*.js").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
@@ -49,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login").permitAll()
                 .failureUrl("/login?error=BadCredentials")
-                .defaultSuccessUrl("/flights", true)
+                .defaultSuccessUrl("/home", true)
                 .and()
                 .logout()
                 .logoutUrl("/logout")

@@ -8,6 +8,8 @@ import airlanetickets.service.AgencyService;
 import airlanetickets.service.AirplaneService;
 import airlanetickets.service.FlightService;
 import airlanetickets.service.ReservationService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class FlightController {
@@ -37,18 +41,33 @@ public class FlightController {
     }
 
     @GetMapping("/flights")
-    public String getFlights(@RequestParam(required = false) String fromSearch,
+    public String getFlights(@RequestParam(required = false) String error,
+                                  Model model){
+        String keyword = null;
+        return findPagianted(keyword,keyword,keyword,1,model);
+    }
+
+    @GetMapping("/flights/page/{pageNo}")
+    public String findPagianted(@RequestParam(required = false) String fromSearch,
                              @RequestParam(required = false) String toSearch,
                              @RequestParam(required = false) String deptSearch,
+                                @PathVariable(value = "pageNo") int pageNo,
                              Model model){
+        int pageSize = 15;
+        Page<Flight> page = this.flightService.findPaginated(pageNo,pageSize,fromSearch,toSearch,deptSearch);
 
-        List<Flight> flights;
 
-        if (fromSearch == null && toSearch == null && deptSearch == null){
-            flights = this.flightService.listAll();
-        }else{
-            flights = this.flightService.listByFromAndToAndDeptTime(fromSearch, toSearch, deptSearch);
-        }
+
+        List<Flight> flights = page.getContent();
+
+
+        model.addAttribute("currentPage",pageNo);
+        model.addAttribute("totalPages",page.getTotalPages());
+        model.addAttribute("totalItems",page.getTotalElements());
+        model.addAttribute("fromSearch", fromSearch);
+        model.addAttribute("toSearch", toSearch);
+        model.addAttribute("deptSearch", deptSearch);
+
 
         model.addAttribute("flights",flights);
 

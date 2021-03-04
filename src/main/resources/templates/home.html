@@ -1,164 +1,577 @@
+<!DOCTYPE html>
 <html lang="zxx" class="no-js" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Home</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="colorlib">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Travel</title>
 
-    <style>
-        #continerID{
-            background-image: url("PlaneFlyingOverCaribbean-HERO.jpg");
-            background-size: cover;
-            height: 600px;
-        }
-
-        .container22{
-            height: 100px;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+    <!--
+    CSS
+    ============================================= -->
+    <link rel="stylesheet" href="/css/linearicons.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link rel="stylesheet" href="/css/nice-select.css">
+    <link rel="stylesheet" href="/css/animate.min.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="/home">Airline Tickets mkdAir</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
-            <ul class="navbar-nav m-auto">
-                <li class="nav-item m-auto">
-                    <a class="nav-link active" href="/home">Home</a>
-                </li>
-                <li class="nav-item m-auto">
-                    <a class="nav-link active" href="/flights">Flights</a>
-                </li>
-                <li class="nav-item m-auto">
-                    <a class="nav-link active" href="/agencies">Agency</a>
-                </li>
-                <li class="nav-item m-auto">
-                    <a class="nav-link active" href="/airplanes">Airplane</a>
-                </li>
-            </ul>
-
-            <form class="form-inline my-2 my-lg-0">
-                <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                           placeholder="Search...">
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-secondary btn-number">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
+<header id="header">
+    <div class="header-top">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-sm-6 col-6 header-top-left">
+                    <ul>
+                        <li><a href="/home">Visit Us</a></li>
+                        <li><a href="/flights">Buy Tickets</a></li>
+                    </ul>
                 </div>
-                <a class="btn btn-success btn-sm ml-3" href="/shopping-cart">
-                    <i class="fa fa-shopping-cart"></i> Cart
-                </a>
-                <a class="btn btn-light btn-sm ml-3" href="/logout">
-                    <i class="fa fa-shopping-cart"></i> Logout
-                </a>
-            </form>
+            </div>
         </div>
     </div>
-</nav>
+    <div class="container main-menu">
+        <div class="row align-items-center justify-content-between d-flex">
+            <div id="logo">
+                <a href="/home"><img src="/img/mkdAirlogo.png" alt="" title="" /></a>
+            </div>
+            <nav id="nav-menu-container">
+                <ul class="nav-menu">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/flights">Flight</a></li>
+                    <li><a href="/agencies" sec:authorize="hasRole('ROLE_ADMIN')">Agency</a></li>
+                    <li><a href="/airplanes" sec:authorize="hasRole('ROLE_ADMIN')">Airplane</a></li>
+                    <li><a href="/verification" sec:authorize="hasRole('ROLE_ADMIN')">Verification</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li  sec:authorize="isAuthenticated()">
+                        <i class="fa fa-user"></i>
+                        <a class="nav-link" href="#">
+                            <th:block th:if="${#request.getRemoteUser() != null}"
+                                      th:text="${#request.getRemoteUser()}"></th:block>
+                        </a>
+                    </li>
+                    <li  sec:authorize="isAuthenticated()">
+                        <a class="btn btn-success btn-sm ml-3" href="/ticket-cart">
+                            <i class="fa fa-shopping-cart"></i> Cart
+                        </a>
+                    </li>
+                    <li  sec:authorize="isAuthenticated()">
+                        <a class="btn btn-danger btn-sm ml-3" href="/logout">
+                            <i class="fa fa-sign-out"></i> Logout
+                        </a>
+                    </li>
+                    <li  sec:authorize="!isAuthenticated()">
+                        <a class="btn btn-primary btn-sm ml-3" href="/login">
+                            <i class="fa fa-sign-in"></i> Login
+                        </a>
+                    </li>
+                </ul>
+            </nav><!-- #nav-menu-container -->
+        </div>
+    </div>
+</header><!-- #header -->
 
-<section class="jumbotron text-center" xmlns:th="http://www.thymeleaf.org">
+<!-- start banner Area -->
+<section class="banner-area relative">
+    <div class="overlay overlay-bg"></div>
     <div class="container">
-        <h1 class="jumbotron-heading">Airline Tickets</h1>
-        <h3 class="jumbotron-heading">mkdAir</h3>
+        <div class="row fullscreen align-items-center justify-content-between">
+            <div class="col-lg-6 col-md-6 banner-left">
+                <h6 class="text-white">Away from monotonous life</h6>
+                <h1 class="text-white">Magical Travel</h1>
+
+            </div>
+            <div class="col-lg-4 col-md-6 banner-right">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="flight-tab" data-toggle="tab" href="#flight" role="tab" aria-controls="flight" aria-selected="true">Flights</a>
+                    </li>
+
+                </ul>
+                <form th:action="@{/flights/page/1}">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="flight" role="tabpanel" aria-labelledby="flight-tab">
+                                <form class="form-wrap">
+                                    <input type="text" class="form-control" name="fromSearch" placeholder="From " onfocus="this.placeholder = ''" onblur="this.placeholder = 'From '">
+                                    <input type="text" class="form-control" name="toSearch" placeholder="To " onfocus="this.placeholder = ''" onblur="this.placeholder = 'To '">
+                                    <input type="date" class="form-control date-picker" name="deptSearch" placeholder="dd-mm-yyyy" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Departure time '">
+
+                                    <button type="submit" class="primary-btn text-uppercase">Search Flight</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+<!-- End banner Area -->
 
 
-<div id="continerID" class="text-center">
-<div class="container" >
 
-<div class="col-lg-4 col-md-6 text-center" id="searches">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="flight-tab" data-toggle="tab" href="#flight" role="tab" aria-controls="flight" aria-selected="true">Flights</a>
-        </li>
 
-    </ul>
-    <form th:action="@{'/flights'}" method="GET">
-        <div class="text-center">
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="flight" role="tabpanel" aria-labelledby="flight-tab">
-            <form class="form-wrap">
-                <input type="text" class="form-control" name="fromSearch" placeholder="From " onfocus="this.placeholder = ''" onblur="this.placeholder = 'From '">
-                <input type="text" class="form-control" name="toSearch" placeholder="To " onfocus="this.placeholder = ''" onblur="this.placeholder = 'To '">
-                <input type="date" class="form-control date-picker" name="deptSearch" placeholder="dd-mm-yyyy" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Departure time '">
-
-                <button type="submit" class="primary-btn text-uppercase">Search Flight</button>
-            </form>
-        </div>
-    </div>
-        </div>
-    </form>
-</div>
-</div>
-</div>
-
-<!-- Footer -->
-<footer class="text-black-50 mt-xl-5">
+<!-- Start popular-destination Area -->
+<section class="popular-destination-area section-gap">
     <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="menu-content pb-70 col-lg-8">
+                <div class="title text-center">
+                    <h1 class="mb-10">Popular Destinations</h1>
+                    <p>We all live in an age that belongs to the young at heart. Life that is becoming extremely fast, day.</p>
+                </div>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-md-3 col-lg-4 col-xl-3">
-                <h5>About</h5>
-                <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
-                <p class="mb-0">
-                    Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant
-                    impression.
-                </p>
+            <div class="col-lg-4">
+                <div class="single-destination relative">
+                    <div class="thumb relative">
+                        <div class="overlay overlay-bg"></div>
+                        <img class="img-fluid" src="img/d1.jpg" alt="">
+                    </div>
+                    <div class="desc">
+                        <a href="/flights?fromSearch=&toSearch=Zurich&deptSearch=" class="price-btn">$200</a>
+                        <h4>Mountain River</h4>
+                        <p>Switzerland</p>
+                    </div>
+                </div>
             </div>
-
-
-            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto">
-                <h5>Informations</h5>
-                <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
-                <ul class="list-unstyled">
-                    <li><a href="">Link 1</a></li>
-                    <li><a href="">Link 2</a></li>
-                    <li><a href="">Link 3</a></li>
-                    <li><a href="">Link 4</a></li>
-                </ul>
+            <div class="col-lg-4">
+                <div class="single-destination relative">
+                    <div class="thumb relative">
+                        <div class="overlay overlay-bg"></div>
+                        <img class="img-fluid" src="img/d2.jpg" alt="">
+                    </div>
+                    <div class="desc">
+                        <a href="/flights?fromSearch=&toSearch=Paris&deptSearch=" class="price-btn">$250</a>
+                        <h4>Dream City</h4>
+                        <p>Paris</p>
+                    </div>
+                </div>
             </div>
-
-            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto">
-                <h5>Others links</h5>
-                <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
-                <ul class="list-unstyled">
-                    <li><a href="">Link 1</a></li>
-                    <li><a href="">Link 2</a></li>
-                    <li><a href="">Link 3</a></li>
-                    <li><a href="">Link 4</a></li>
-                </ul>
-            </div>
-
-            <div class="col-md-4 col-lg-3 col-xl-3">
-                <h5>Contact</h5>
-                <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
-                <ul class="list-unstyled">
-                    <li><i class="fa fa-home mr-2"></i> My company</li>
-                    <li><i class="fa fa-envelope mr-2"></i> email@example.com</li>
-                    <li><i class="fa fa-phone mr-2"></i> + 33 12 14 15 16</li>
-                    <li><i class="fa fa-print mr-2"></i> + 33 12 14 15 16</li>
-                </ul>
+            <div class="col-lg-4">
+                <div class="single-destination relative">
+                    <div class="thumb relative">
+                        <div class="overlay overlay-bg"></div>
+                        <img class="img-fluid" src="img/d3.jpg" alt="">
+                    </div>
+                    <div class="desc">
+                        <a href="/flights?fromSearch=&toSearch=Norway&deptSearch=" class="price-btn">$350</a>
+                        <h4>Cloud Mountain</h4>
+                        <p>Norway</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</section>
+<!-- End popular-destination Area -->
 
+
+
+
+
+
+
+<!-- Start testimonial Area -->
+<section class="testimonial-area section-gap">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="menu-content pb-70 col-lg-8">
+                <div class="title text-center">
+                    <h1 class="mb-10">Testimonial from our Clients</h1>
+                    <p>The French Revolution constituted for the conscience of the dominant aristocratic class a fall from </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="active-testimonial">
+                <div class="single-testimonial item d-flex flex-row">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/elements/user1.png" alt="">
+                    </div>
+                    <div class="desc">
+                        <p>
+                            Do you want to be even more successful? Learn to love learning and growth. The more effort you put into improving your skills, the bigger the payoff you.
+                        </p>
+                        <h4>Harriet Maxwell</h4>
+                        <div class="star">
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-testimonial item d-flex flex-row">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/elements/user2.png" alt="">
+                    </div>
+                    <div class="desc">
+                        <p>
+                            A purpose is the eternal condition for success. Every former smoker can tell you just how hard it is to stop smoking cigarettes. However.
+                        </p>
+                        <h4>Carolyn Craig</h4>
+                        <div class="star">
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-testimonial item d-flex flex-row">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/elements/user1.png" alt="">
+                    </div>
+                    <div class="desc">
+                        <p>
+                            Do you want to be even more successful? Learn to love learning and growth. The more effort you put into improving your skills, the bigger the payoff you.
+                        </p>
+                        <h4>Harriet Maxwell</h4>
+                        <div class="star">
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-testimonial item d-flex flex-row">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/elements/user2.png" alt="">
+                    </div>
+                    <div class="desc">
+                        <p>
+                            A purpose is the eternal condition for success. Every former smoker can tell you just how hard it is to stop smoking cigarettes. However.
+                        </p>
+                        <h4>Carolyn Craig</h4>
+                        <div class="star">
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-testimonial item d-flex flex-row">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/elements/user1.png" alt="">
+                    </div>
+                    <div class="desc">
+                        <p>
+                            Do you want to be even more successful? Learn to love learning and growth. The more effort you put into improving your skills, the bigger the payoff you.
+                        </p>
+                        <h4>Harriet Maxwell</h4>
+                        <div class="star">
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-testimonial item d-flex flex-row">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/elements/user2.png" alt="">
+                    </div>
+                    <div class="desc">
+                        <p>
+                            A purpose is the eternal condition for success. Every former smoker can tell you just how hard it is to stop smoking cigarettes. However.
+                        </p>
+                        <h4>Carolyn Craig</h4>
+                        <div class="star">
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End testimonial Area -->
+
+
+
+
+<!-- Start blog Area -->
+<section class="recent-blog-area section-gap">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="menu-content pb-60 col-lg-9">
+                <div class="title text-center">
+                    <h1 class="mb-10">Latest from Our Blog</h1>
+                    <p>With the exception of Nietzsche, no other madman has contributed so much to human sanity as has.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="active-recent-blog-carusel">
+                <div class="single-recent-blog-post item">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/b1.jpg" alt="">
+                    </div>
+                    <div class="details">
+                        <div class="tags">
+                            <ul>
+                                <li>
+                                    <a href="#">Travel</a>
+                                </li>
+                                <li>
+                                    <a href="#">Life Style</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="#"><h4 class="title">Low Cost Advertising</h4></a>
+                        <p>
+                            Acres of Diamonds… you’ve read the famous story, or at least had it related to you. A farmer.
+                        </p>
+                        <h6 class="date">31st January,2018</h6>
+                    </div>
+                </div>
+                <div class="single-recent-blog-post item">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/b2.jpg" alt="">
+                    </div>
+                    <div class="details">
+                        <div class="tags">
+                            <ul>
+                                <li>
+                                    <a href="#">Travel</a>
+                                </li>
+                                <li>
+                                    <a href="#">Life Style</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="#"><h4 class="title">Creative Outdoor Ads</h4></a>
+                        <p>
+                            Acres of Diamonds… you’ve read the famous story, or at least had it related to you. A farmer.
+                        </p>
+                        <h6 class="date">31st January,2018</h6>
+                    </div>
+                </div>
+                <div class="single-recent-blog-post item">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/b3.jpg" alt="">
+                    </div>
+                    <div class="details">
+                        <div class="tags">
+                            <ul>
+                                <li>
+                                    <a href="#">Travel</a>
+                                </li>
+                                <li>
+                                    <a href="#">Life Style</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="#"><h4 class="title">It's Classified How To Utilize Free</h4></a>
+                        <p>
+                            Acres of Diamonds… you’ve read the famous story, or at least had it related to you. A farmer.
+                        </p>
+                        <h6 class="date">31st January,2018</h6>
+                    </div>
+                </div>
+                <div class="single-recent-blog-post item">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/b1.jpg" alt="">
+                    </div>
+                    <div class="details">
+                        <div class="tags">
+                            <ul>
+                                <li>
+                                    <a href="#">Travel</a>
+                                </li>
+                                <li>
+                                    <a href="#">Life Style</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="#"><h4 class="title">Low Cost Advertising</h4></a>
+                        <p>
+                            Acres of Diamonds… you’ve read the famous story, or at least had it related to you. A farmer.
+                        </p>
+                        <h6 class="date">31st January,2018</h6>
+                    </div>
+                </div>
+                <div class="single-recent-blog-post item">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/b2.jpg" alt="">
+                    </div>
+                    <div class="details">
+                        <div class="tags">
+                            <ul>
+                                <li>
+                                    <a href="#">Travel</a>
+                                </li>
+                                <li>
+                                    <a href="#">Life Style</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="#"><h4 class="title">Creative Outdoor Ads</h4></a>
+                        <p>
+                            Acres of Diamonds… you’ve read the famous story, or at least had it related to you. A farmer.
+                        </p>
+                        <h6 class="date">31st January,2018</h6>
+                    </div>
+                </div>
+                <div class="single-recent-blog-post item">
+                    <div class="thumb">
+                        <img class="img-fluid" src="img/b3.jpg" alt="">
+                    </div>
+                    <div class="details">
+                        <div class="tags">
+                            <ul>
+                                <li>
+                                    <a href="#">Travel</a>
+                                </li>
+                                <li>
+                                    <a href="#">Life Style</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="#"><h4 class="title">It's Classified How To Utilize Free</h4></a>
+                        <p>
+                            Acres of Diamonds… you’ve read the famous story, or at least had it related to you. A farmer.
+                        </p>
+                        <h6 class="date">31st January,2018</h6>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End recent-blog Area -->
+
+<!-- start footer Area -->
+<footer class="footer-area section-gap">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>About Agency</h6>
+                    <p>
+                        The world has become so fast paced that people don’t want to stand by reading a page of information, they would much rather look at a presentation and understand the message. It has come to a point
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Navigation Links</h6>
+                    <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">Feature</a></li>
+                                <li><a href="#">Services</a></li>
+                                <li><a href="#">Portfolio</a></li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <ul>
+                                <li><a href="#">Team</a></li>
+                                <li><a href="#">Pricing</a></li>
+                                <li><a href="#">Blog</a></li>
+                                <li><a href="#">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Newsletter</h6>
+                    <p>
+                        For business professionals caught between high OEM price and mediocre print and graphic output.
+                    </p>
+                    <div id="mc_embed_signup">
+                        <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="subscription relative">
+                            <div class="input-group d-flex flex-row">
+                                <input name="EMAIL" placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required="" type="email">
+                                <button class="btn bb-btn"><span class="lnr lnr-location"></span></button>
+                            </div>
+                            <div class="mt-10 info"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3  col-md-6 col-sm-6">
+                <div class="single-footer-widget mail-chimp">
+                    <h6 class="mb-20">InstaFeed</h6>
+                    <ul class="instafeed d-flex flex-wrap">
+                        <li><img src="/img/i1.jpg" alt=""></li>
+                        <li><img src="/img/i2.jpg" alt=""></li>
+                        <li><img src="/img/i3.jpg" alt=""></li>
+                        <li><img src="/img/i4.jpg" alt=""></li>
+                        <li><img src="/img/i5.jpg" alt=""></li>
+                        <li><img src="/img/i6.jpg" alt=""></li>
+                        <li><img src="/img/i7.jpg" alt=""></li>
+                        <li><img src="/img/i8.jpg" alt=""></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row footer-bottom d-flex justify-content-between align-items-center">
+            <p class="col-lg-8 col-sm-12 footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+            <div class="col-lg-4 col-sm-12 footer-social">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-dribbble"></i></a>
+                <a href="#"><i class="fa fa-behance"></i></a>
+            </div>
+        </div>
+    </div>
 </footer>
+<!-- End footer Area -->
+
+<script src="/js/vendor/jquery-2.2.4.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/vendor/bootstrap.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/easing.min.js"></script>
+<script src="/js/hoverIntent.js"></script>
+<script src="/js/superfish.min.js"></script>
+<script src="/js/jquery.ajaxchimp.min.js"></script>
+<script src="/js/jquery.magnific-popup.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/mail-script.js"></script>
+<script src="/js/main.js"></script>
 
 </body>
 </html>

@@ -89,7 +89,8 @@ public class TicketController {
     }
 
     @PostMapping("/ticket-cart/{id}/canceled")
-    public String canceled(@PathVariable Long id){
+    public String canceled(@PathVariable Long id,HttpServletRequest req){
+
         this.orderService.delete(id);
         return "redirect:/ticket-cart";
     }
