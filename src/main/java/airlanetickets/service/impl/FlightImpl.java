@@ -7,6 +7,7 @@ import airlanetickets.service.FlightService;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,16 +35,26 @@ public class FlightImpl implements FlightService {
 
     @Override
     public Page<Flight> findPaginated(int pageNo, int pageSize, String fromSearch, String toSearch, String deptTime) {
-        //this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
+        this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
 
         Pageable pageable = PageRequest.of(pageNo-1,pageSize,Sort.by(Sort.Direction.ASC, "deparatureTime"));
+        List<Flight> flightList = new ArrayList<>();
 
         if (fromSearch != null || toSearch != null || deptTime != null){
             System.out.println("IN IF");
-            return this.listByFromAndToAndDeptTime(fromSearch,toSearch,deptTime,pageable);
+
+            flightList =  this.listByFromAndToAndDeptTime(fromSearch,toSearch,deptTime,pageable);
+            int start = (int) pageable.getOffset();
+            int end = (start + pageable.getPageSize()) > flightList.size() ? flightList.size() : (start+pageable.getPageSize());
+            return new PageImpl<Flight>(flightList.subList(start,end),pageable,flightList.size());
+
         }
 
-        return this.flightRepository.findAll(pageable);
+        flightList = this.flightRepository.findAll().stream().filter(f -> f.cantShow()).collect(Collectors.toList());
+        int start = (int) pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > flightList.size() ? flightList.size() : (start+pageable.getPageSize());
+
+        return new PageImpl<Flight>(flightList.subList(start,end),pageable,flightList.size());
     }
 
     @Override
@@ -107,9 +118,11 @@ public class FlightImpl implements FlightService {
         for (Flight flight : flightFilter){
             Order order = this.orderRepository.findByFlightId(flight.getId());
             Ticket ticket = this.ticketRepository.findByOrders(order);
-            this.ticketRepository.delete(ticket);
-            this.orderRepository.delete(order);
-            this.flightRepository.delete(flight);
+            if (ticket != null && order != null) {
+                this.ticketRepository.delete(ticket);
+                this.orderRepository.delete(order);
+                this.flightRepository.delete(flight);
+            }
         }
     }
 
@@ -118,15 +131,17 @@ public class FlightImpl implements FlightService {
         Flight flight = this.findById(id);
         Order order = this.orderRepository.findByFlightId(id);
         Ticket ticket = this.ticketRepository.findByOrders(order);
-        this.ticketRepository.delete(ticket);
-        this.orderRepository.delete(order);
-        this.flightRepository.delete(flight);
+        if (ticket != null && order != null) {
+            this.ticketRepository.delete(ticket);
+            this.orderRepository.delete(order);
+            this.flightRepository.delete(flight);
+        }
 
         return flight;
     }
 
     @Override
-    public Page<Flight> listByFromAndToAndDeptTime(String fromSearch, String toSearch, String deptSearch,Pageable pageable) {
+    public List<Flight> listByFromAndToAndDeptTime(String fromSearch, String toSearch, String deptSearch,Pageable pageable) {
         this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
 
         String fromLike = "%" + fromSearch + "%";
@@ -144,27 +159,27 @@ public class FlightImpl implements FlightService {
         String deptLike = "%" + deptTime + "%";
 
        if (fromSearch != null && toSearch != null && deptSearch != null){
-            return this.flightRepository.findAllByFromLocationLikeAndToLocationLikeAndDeparatureTimeLike(fromLike,toLike,deptLike,pageable);
+            return this.flightRepository.findAllByFromLocationLikeAndToLocationLikeAndDeparatureTimeLike(fromLike,toLike,deptLike);
 
         }else if(fromSearch != null && toSearch != null){
-            return this.flightRepository.findAllByFromLocationLikeAndToLocationLike(fromLike,toLike,pageable);
+            return this.flightRepository.findAllByFromLocationLikeAndToLocationLike(fromLike,toLike);
 
         }else if(fromSearch != null && deptSearch != null){
-            return this.flightRepository.findAllByFromLocationLikeAndDeparatureTimeLike(fromLike,deptLike,pageable);
+            return this.flightRepository.findAllByFromLocationLikeAndDeparatureTimeLike(fromLike,deptLike);
 
         }else if(toSearch != null && deptSearch != null){
-            return  this.flightRepository.findAllByToLocationLikeAndDeparatureTimeLike(fromLike,deptLike,pageable);
+            return  this.flightRepository.findAllByToLocationLikeAndDeparatureTimeLike(fromLike,deptLike);
 
         }else if(fromSearch != null){
-            return  this.flightRepository.findAllByFromLocationLike(fromLike,pageable);
+            return  this.flightRepository.findAllByFromLocationLike(fromLike);
 
         }else if(toSearch != null){
-            return  this.flightRepository.findAllByToLocationLike(toLike,pageable);
+            return  this.flightRepository.findAllByToLocationLike(toLike);
 
         }else if(deptSearch != null){
-            return this.flightRepository.findAllByDeparatureTimeLike(deptLike,pageable);
+            return this.flightRepository.findAllByDeparatureTimeLike(deptLike);
         }else{
-            return (Page<Flight>) this.listAll();
+            return  this.listAll();
         }
     }
 }

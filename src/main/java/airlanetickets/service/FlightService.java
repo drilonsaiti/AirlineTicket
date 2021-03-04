@@ -20,7 +20,7 @@ public interface FlightService {
 
     Flight delete(Long id);
 
-    Page<Flight> listByFromAndToAndDeptTime(String fromSearch, String toSearch, String deptSearch, Pageable pageable);
+    List<Flight> listByFromAndToAndDeptTime(String fromSearch, String toSearch, String deptSearch, Pageable pageable);
 
      Flight updateSeats(Long id,int seats);
 

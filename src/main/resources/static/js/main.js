@@ -226,7 +226,7 @@ $(document).ready(function() {
 
         // Account for home page with empty path
         if (path == '') {
-            path = 'index.html';
+            path = 'home.html';
         }
 
         var target = $('nav a[href="' + path + '"]');

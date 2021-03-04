@@ -6,24 +6,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 
 public interface FlightRepository extends JpaRepository<Flight,Long> , PagingAndSortingRepository<Flight,Long> {
 
-    Page<Flight> findAllByFromLocationLikeAndToLocationLikeAndDeparatureTimeLike(String fromSearch, String toSearch, String deptSearch, Pageable pageable);
+    List<Flight> findAllByFromLocationLikeAndToLocationLikeAndDeparatureTimeLike(String fromSearch, String toSearch, String deptSearch);
 
-    Page<Flight> findAllByFromLocationLikeAndToLocationLike(String fromSearch,String toSearch,Pageable pageable);
+    List<Flight> findAllByFromLocationLikeAndToLocationLike(String fromSearch,String toSearch);
 
-    Page<Flight> findAllByFromLocationLikeAndDeparatureTimeLike(String fromSearch,String toSearch,Pageable pageable );
+    List<Flight> findAllByFromLocationLikeAndDeparatureTimeLike(String fromSearch,String toSearch );
 
-    Page<Flight> findAllByToLocationLikeAndDeparatureTimeLike(String toSearch,String deptSearch,Pageable pageable);
+    List<Flight> findAllByToLocationLikeAndDeparatureTimeLike(String toSearch,String deptSearch);
 
-    Page<Flight> findAllByFromLocationLike(String fromSearch ,Pageable pageable);
+    List<Flight> findAllByFromLocationLike(String fromSearch);
 
-    Page<Flight> findAllByToLocationLike(String deptSearch,Pageable pageable);
+    List<Flight> findAllByToLocationLike(String deptSearch );
 
-    Page<Flight> findAllByDeparatureTimeLike(String deptSearch,Pageable pageable);
+    List<Flight> findAllByDeparatureTimeLike(String deptSearch );
 
     Optional<Flight> findById(Long id);
 }
