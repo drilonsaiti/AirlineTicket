@@ -96,7 +96,7 @@ public class Flight {
 
         System.out.println(this.fromLocation + " " + this.toLocation + " hour " + hour + " now hour " + now.getHour() + " now.getHour - hour " + min + " minday " + minday);
 
-        if (day >= now.getDayOfMonth() && month >= now.getMonth().getValue() && year == now.getYear() && min+minday >= 5) {
+        if (day >= now.getDayOfMonth() && month >= now.getMonth().getValue() && year == now.getYear() && min+minday > 0 && min+minday <= 5) {
             return true;
         }
 

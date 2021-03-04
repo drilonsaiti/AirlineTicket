@@ -265,10 +265,12 @@
         <div class="form-group">
             <label>Validation of credit card</label>
             <select name="monthfValid" id="monthfValid" required>
+                <option value="">Please choose an option</option>
                 <option th:each="month : ${monthValid}" th:value="${month}" th:text="${month}" Selected></option>
             </select>
 
             <select name="yearOfValid" id="yearOfValid" required>
+                <option value="">Please choose an option</option>
                 <option th:each="year : ${yearValid}" th:value="${year}" th:text="${year}" Selected></option>
             </select>
 

@@ -43,14 +43,15 @@ public class FlightImpl implements FlightService {
         if (fromSearch != null || toSearch != null || deptTime != null){
             System.out.println("IN IF");
 
-            flightList =  this.listByFromAndToAndDeptTime(fromSearch,toSearch,deptTime,pageable);
+            flightList =  this.listByFromAndToAndDeptTime(fromSearch,toSearch,deptTime,pageable)
+                    .stream().filter(Flight::cantShow).collect(Collectors.toList());
             int start = (int) pageable.getOffset();
             int end = (start + pageable.getPageSize()) > flightList.size() ? flightList.size() : (start+pageable.getPageSize());
             return new PageImpl<Flight>(flightList.subList(start,end),pageable,flightList.size());
 
         }
 
-        flightList = this.flightRepository.findAll().stream().filter(f -> f.cantShow()).collect(Collectors.toList());
+        flightList = this.flightRepository.findAll().stream().filter(Flight::cantShow).collect(Collectors.toList());
         int start = (int) pageable.getOffset();
         int end = (start + pageable.getPageSize()) > flightList.size() ? flightList.size() : (start+pageable.getPageSize());
 
@@ -116,13 +117,15 @@ public class FlightImpl implements FlightService {
         List<Flight> flightFilter = flights.stream()
                 .filter(f -> !f.cantShow() || f.getTotal_seats() == 0).collect(Collectors.toList());
         for (Flight flight : flightFilter){
+            System.out.println(flight);
             Order order = this.orderRepository.findByFlightId(flight.getId());
             Ticket ticket = this.ticketRepository.findByOrders(order);
             if (ticket != null && order != null) {
                 this.ticketRepository.delete(ticket);
                 this.orderRepository.delete(order);
-                this.flightRepository.delete(flight);
+
             }
+            this.flightRepository.delete(flight);
         }
     }
 
@@ -134,8 +137,9 @@ public class FlightImpl implements FlightService {
         if (ticket != null && order != null) {
             this.ticketRepository.delete(ticket);
             this.orderRepository.delete(order);
-            this.flightRepository.delete(flight);
+
         }
+        this.flightRepository.delete(flight);
 
         return flight;
     }
