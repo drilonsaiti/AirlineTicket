@@ -82,12 +82,12 @@
                             </a>
                         </li>
                         <li  sec:authorize="isAuthenticated()">
-                            <a class="btn btn-light btn-sm ml-3" href="/logout">
+                            <a class="btn btn-danger btn-sm ml-3" href="/logout">
                                 <i class="fa fa-sign-out"></i> Logout
                             </a>
                         </li>
                         <li  sec:authorize="!isAuthenticated()">
-                            <a class="btn btn-light btn-sm ml-3" href="/login">
+                            <a class="btn btn-primary btn-sm ml-3" href="/login">
                                 <i class="fa fa-sign-in"></i> Login
                             </a>
                         </li>

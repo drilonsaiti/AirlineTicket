@@ -54,15 +54,9 @@ public class Order {
         int hour = Integer.parseInt(partsTime[0]);
         int minute = Integer.parseInt(partsTime[1]);
 
-        System.out.println("DAY " + day + " " + now.getDayOfMonth() );
-        System.out.println("Month " + month + " " + now.getMonth().getValue());
-        System.out.println("YEAR " + year + " " + now.getYear());
-
         if (day > now.getDayOfMonth() && month >= now.getMonth().getValue() && year == now.getYear()) {
-            System.out.println("TRUE");
             return true;
         }
-        System.out.println("FALSE");
 
         return false;
     }
@@ -96,6 +90,8 @@ public class Order {
 
         return false;
     }
+
+
 
     public String getDateFromFlight(){
         return flight.getDeparatureTime();

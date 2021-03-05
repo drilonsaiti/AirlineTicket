@@ -56,13 +56,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order delete(Long id) {
+    public Order delete(Long id,Ticket ticket) {
         Order order = this.findById(id);
-        Flight flight = this.flightRepository.findById(order.getFlight().getId()).orElseThrow();
-        Ticket ticket = this.ticketRepository.findByOrders(order);
-        this.ticketRepository.delete(ticket);
+        order.getFlight().setTotalSeatsPlus(1);
+        ticket.removeOrder(order);
         this.orderRepository.delete(order);
-        this.flightRepository.delete(flight);
 
         return order;
     }

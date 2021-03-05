@@ -4,10 +4,12 @@ import airlanetickets.model.*;
 import airlanetickets.model.exceptions.InvalidFlightIdException;
 import airlanetickets.repository.*;
 import airlanetickets.service.FlightService;
+import airlanetickets.service.TicketService;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,35 +25,40 @@ public class FlightImpl implements FlightService {
 
     private final OrderRepository orderRepository;
 
+    private final TicketService ticketService;
+
     private final TicketRepository ticketRepository;
 
-    public FlightImpl(FlightRepository flightRepository, AgencyRepository agencyRepository, AirplaneRepository airplaneRepository, OrderRepository orderRepository, TicketRepository ticketRepository) {
+    public FlightImpl(FlightRepository flightRepository, AgencyRepository agencyRepository, AirplaneRepository airplaneRepository, OrderRepository orderRepository, TicketService ticketRepository, TicketRepository ticketRepository1) {
         this.flightRepository = flightRepository;
         this.agencyRepository = agencyRepository;
         this.airplaneRepository = airplaneRepository;
         this.orderRepository = orderRepository;
-        this.ticketRepository = ticketRepository;
+        this.ticketService = ticketRepository;
+        this.ticketRepository = ticketRepository1;
     }
 
     @Override
-    public Page<Flight> findPaginated(int pageNo, int pageSize, String fromSearch, String toSearch, String deptTime) {
+    public Page<Flight> findPaginated(int pageNo, int pageSize, String fromSearch, String toSearch, String deptTime,String username) {
+
         this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
 
-        Pageable pageable = PageRequest.of(pageNo-1,pageSize,Sort.by(Sort.Direction.ASC, "deparatureTime"));
+        Pageable pageable = PageRequest.of(pageNo-1,pageSize);
         List<Flight> flightList = new ArrayList<>();
 
         if (fromSearch != null || toSearch != null || deptTime != null){
-            System.out.println("IN IF");
 
             flightList =  this.listByFromAndToAndDeptTime(fromSearch,toSearch,deptTime,pageable)
-                    .stream().filter(Flight::cantShow).collect(Collectors.toList());
+                    .stream().filter(Flight::cantShow)
+                    .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
             int start = (int) pageable.getOffset();
             int end = (start + pageable.getPageSize()) > flightList.size() ? flightList.size() : (start+pageable.getPageSize());
             return new PageImpl<Flight>(flightList.subList(start,end),pageable,flightList.size());
 
         }
 
-        flightList = this.flightRepository.findAll().stream().filter(Flight::cantShow).collect(Collectors.toList());
+        flightList = this.flightRepository.findAll().stream().filter(Flight::cantShow)
+                .sorted(Comparator.comparing(Flight::getDeparatureTime)).collect(Collectors.toList());
         int start = (int) pageable.getOffset();
         int end = (start + pageable.getPageSize()) > flightList.size() ? flightList.size() : (start+pageable.getPageSize());
 
@@ -68,7 +75,6 @@ public class FlightImpl implements FlightService {
 
     @Override
     public List<Flight> listAll() {
-        this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
         return this.flightRepository.findAll();
     }
 
@@ -113,15 +119,14 @@ public class FlightImpl implements FlightService {
     }
 
     @Override
-    public void deleteExpDateAndNoAvbSeats(List<Flight> flights) {
+    public void deleteExpDateAndNoAvbSeats(List<Flight> flights ) {
         List<Flight> flightFilter = flights.stream()
                 .filter(f -> !f.cantShow() || f.getTotal_seats() == 0).collect(Collectors.toList());
         for (Flight flight : flightFilter){
-            System.out.println(flight);
             Order order = this.orderRepository.findByFlightId(flight.getId());
-            Ticket ticket = this.ticketRepository.findByOrders(order);
-            if (ticket != null && order != null) {
-                this.ticketRepository.delete(ticket);
+            Ticket tickets = this.ticketRepository.findTicketByOrders(order);
+            if (tickets != null && order != null) {
+                tickets.removeOrder(order);
                 this.orderRepository.delete(order);
 
             }
@@ -130,22 +135,22 @@ public class FlightImpl implements FlightService {
     }
 
     @Override
-    public Flight delete(Long id) {
+    public void delete(Long id) {
         Flight flight = this.findById(id);
         Order order = this.orderRepository.findByFlightId(id);
-        Ticket ticket = this.ticketRepository.findByOrders(order);
-        if (ticket != null && order != null) {
-            this.ticketRepository.delete(ticket);
+        Ticket tickets = this.ticketRepository.findTicketByOrders(order);
+        if (tickets != null && order != null) {
+            tickets.removeOrder(order);
             this.orderRepository.delete(order);
 
         }
-        this.flightRepository.delete(flight);
+        this.flightRepository.deleteById(id);
 
-        return flight;
+        //return flight;
     }
 
     @Override
-    public List<Flight> listByFromAndToAndDeptTime(String fromSearch, String toSearch, String deptSearch,Pageable pageable) {
+    public List<Flight> listByFromAndToAndDeptTime(String fromSearch, String toSearch, String deptSearch,Pageable pageable ) {
         this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
 
         String fromLike = "%" + fromSearch + "%";

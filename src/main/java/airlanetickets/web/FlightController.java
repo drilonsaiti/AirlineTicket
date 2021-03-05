@@ -4,12 +4,9 @@ package airlanetickets.web;
 import airlanetickets.model.Agency;
 import airlanetickets.model.Airplane;
 import airlanetickets.model.Flight;
-import airlanetickets.service.AgencyService;
-import airlanetickets.service.AirplaneService;
-import airlanetickets.service.FlightService;
-import airlanetickets.service.ReservationService;
+import airlanetickets.model.Ticket;
+import airlanetickets.service.*;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Comparator;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class FlightController {
@@ -32,19 +28,24 @@ public class FlightController {
 
     private final ReservationService reservationService;
 
+    private final TicketService ticketService;
 
-    public FlightController(FlightService flightService, AgencyService agencyService, AirplaneService airplaneService, ReservationService reservationService) {
+
+
+    public FlightController(FlightService flightService, AgencyService agencyService, AirplaneService airplaneService, ReservationService reservationService, TicketService ticketService) {
         this.flightService = flightService;
         this.agencyService = agencyService;
         this.airplaneService = airplaneService;
         this.reservationService = reservationService;
+        this.ticketService = ticketService;
     }
 
     @GetMapping("/flights")
     public String getFlights(@RequestParam(required = false) String error,
-                                  Model model){
+                                  Model model,HttpServletRequest req){
+
         String keyword = null;
-        return findPagianted(keyword,keyword,keyword,1,model);
+        return findPagianted(keyword,keyword,keyword,1,model,req);
     }
 
     @GetMapping("/flights/page/{pageNo}")
@@ -52,9 +53,16 @@ public class FlightController {
                              @RequestParam(required = false) String toSearch,
                              @RequestParam(required = false) String deptSearch,
                                 @PathVariable(value = "pageNo") int pageNo,
-                             Model model){
+                             Model model,HttpServletRequest req){
+
+        String username = req.getRemoteUser();
+        Page<Flight> page = null;
         int pageSize = 15;
-        Page<Flight> page = this.flightService.findPaginated(pageNo,pageSize,fromSearch,toSearch,deptSearch);
+        if (username != null && !username.isEmpty()) {
+             page = this.flightService.findPaginated(pageNo, pageSize, fromSearch, toSearch, deptSearch, username);
+        }else{
+            page = this.flightService.findPaginated(pageNo, pageSize, fromSearch, toSearch, deptSearch, "null");
+        }
 
 
 
@@ -135,6 +143,7 @@ public class FlightController {
 
     @PostMapping("/flights/{id}/delete")
     public String delete(@PathVariable Long id) {
+
         this.flightService.delete(id);
         return "redirect:/flights";
     }

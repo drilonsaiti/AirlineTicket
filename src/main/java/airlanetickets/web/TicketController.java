@@ -90,8 +90,9 @@ public class TicketController {
 
     @PostMapping("/ticket-cart/{id}/canceled")
     public String canceled(@PathVariable Long id,HttpServletRequest req){
-
-        this.orderService.delete(id);
+        String username = req.getRemoteUser();
+        Ticket ticket = this.ticketService.getActiveTicketCart(username);
+        this.orderService.delete(id,ticket);
         return "redirect:/ticket-cart";
     }
 

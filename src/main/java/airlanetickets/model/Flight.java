@@ -96,7 +96,7 @@ public class Flight {
 
         System.out.println(this.fromLocation + " " + this.toLocation + " hour " + hour + " now hour " + now.getHour() + " now.getHour - hour " + min + " minday " + minday);
 
-        if (day >= now.getDayOfMonth() && month >= now.getMonth().getValue() && year == now.getYear() && min+minday > 0 && min+minday <= 5) {
+        if (day >= now.getDayOfMonth() && month >= now.getMonth().getValue() && year == now.getYear() && min+minday > 0 && min+minday >= 4) {
             return true;
         }
 
@@ -107,6 +107,10 @@ public class Flight {
 
     public void setTotalSeats(int takeSeats){
         this.total_seats = this.total_seats - takeSeats;
+    }
+
+    public void setTotalSeatsPlus(int takeSeats){
+        this.total_seats = this.total_seats + takeSeats;
     }
 
 
