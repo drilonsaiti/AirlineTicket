@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @Controller
 public class TicketController {
@@ -65,7 +68,10 @@ public class TicketController {
             System.out.println("ITS NULL");
         }
 
-        model.addAttribute("orders",this.ticketService.listAllOrderInShoppingCart(ticket.getId()));
+        List<Order> list = this.ticketService.listAllOrderInShoppingCart(ticket.getId());
+        Collections.reverse(list);
+
+        model.addAttribute("orders", list);
         model.addAttribute("ticket",ticket);
 
         return "ticket-cart";

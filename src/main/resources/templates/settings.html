@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="colorlib">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Travel</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+    <!--
+    CSS
+    ============================================= -->
+    <link rel="stylesheet" href="/css/linearicons.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link rel="stylesheet" href="/css/nice-select.css">
+    <link rel="stylesheet" href="/css/animate.min.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <!-- <link rel="stylesheet" href="/css/sidebar.css">-->
+
+</head>
+<body>
+<header id="header">
+    <div class="header-top">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-sm-6 col-6 header-top-left">
+                    <ul>
+                        <li><a href="/home">Visit Us</a></li>
+                        <li><a href="/flights">Buy Tickets</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container main-menu">
+        <div class="row align-items-center justify-content-between d-flex">
+            <div id="logo">
+                <a href="/home"><img src="/img/mkdAirlogo.png" alt="" title="" /></a>
+            </div>
+            <nav id="nav-menu-container">
+                <ul class="nav-menu">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/flights">Flight</a></li>
+                    <li><a href="/agencies" sec:authorize="hasRole('ROLE_ADMIN')">Agency</a></li>
+                    <li><a href="/airplanes" sec:authorize="hasRole('ROLE_ADMIN')">Airplane</a></li>
+                    <li><a href="/verification" sec:authorize="hasRole('ROLE_ADMIN')">Verification</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li  sec:authorize="isAuthenticated()">
+                        <i class="fa fa-user"></i>
+                        <a class="nav-link" href="/profile">
+                            <th:block th:if="${#request.getRemoteUser() != null}"
+                                      th:text="${#request.getRemoteUser()}"></th:block>
+                        </a>
+                    </li>
+                    <li  sec:authorize="isAuthenticated()">
+                        <a class="btn btn-success btn-sm ml-3" href="/ticket-cart">
+                            <i class="fa fa-shopping-cart"></i> Cart
+                        </a>
+                    </li>
+                    <li  sec:authorize="isAuthenticated()">
+                        <a class="btn btn-danger btn-sm ml-3" href="/logout">
+                            <i class="fa fa-sign-out"></i> Logout
+                        </a>
+                    </li>
+                    <li  sec:authorize="!isAuthenticated()">
+                        <a class="btn btn-primary btn-sm ml-3" href="/login">
+                            <i class="fa fa-sign-in"></i> Login
+                        </a>
+                    </li>
+                </ul>
+            </nav><!-- #nav-menu-container -->
+        </div>
+    </div>
+</header><!-- #header -->
+
+<!-- start banner Area -->
+<section class="about-banner relative" id="banners">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12">
+                <h1 class="text-white">
+                    Profile -> Settings
+                </h1>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End banner Area -->
+
+<br/>
+
+<div class="container text-center">
+
+    <div class="container text-center">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link" href="/profile">My profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+
+        </ul>
+    </div>
+    <br/>
+</div>
+
+<div class="container">
+
+    <section>
+        <form method="POST" th:action="@{'/profile/{username}' (username=${#request.getRemoteUser()})}">
+            <div class="form-group">
+                <label for="usernameOfUser">@username</label>
+                <input type="text"
+                       class="form-control"
+                       id="usernameOfUser"
+                       name="usernameOfUser"
+                       th:value="${user?.get().getUsername()}"
+                       required>
+            </div>
+
+
+
+            <div class="form-group">
+                <label for="nameOfUser">Name</label>
+                <input type="text"
+                       class="form-control"
+                       id="nameOfUser"
+                       name="nameOfUser"
+                       th:value="${user?.get().getName()}"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="surnameOfUser">Surname</label>
+                <input type="text"
+                       class="form-control"
+                       id="surnameOfUser"
+                       name="surnameOfUser"
+                       th:value="${user?.get().getSurname()}"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="emailOfUser">Email</label>
+                <input type="text"
+                       class="form-control"
+                       id="emailOfUser"
+                       name="emailOfUser"
+                       th:value="${user?.get().getEmail()}"
+                       required>
+            </div>
+        </form>
+
+    </section>
+
+    <form th:action="@{'/user/delete/{username}' (username=${#request.getRemoteUser()})}"
+          th:method="POST">
+        <button type="submit" class="btn btn-sm btn-danger "><i
+                class="fa fa-trash">Delete account</i>
+        </button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -2,10 +2,7 @@ package airlanetickets.web;
 
 
 import airlanetickets.model.enumerations.Role;
-import airlanetickets.model.exceptions.EmailAlreadyExistsException;
-import airlanetickets.model.exceptions.InvalidArgumentsException;
-import airlanetickets.model.exceptions.InvalidEmailException;
-import airlanetickets.model.exceptions.PasswordsDoNotMatchException;
+import airlanetickets.model.exceptions.*;
 import airlanetickets.service.AuthService;
 import airlanetickets.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -48,7 +45,7 @@ public class RegisterController {
         try {
             this.userService.register(username, password, repeatedPassword, name, surname,email,role);
             return "redirect:/login";
-        } catch (InvalidArgumentsException | PasswordsDoNotMatchException | EmailAlreadyExistsException | InvalidEmailException exception) {
+        } catch (InvalidArgumentsException | PasswordsDoNotMatchException | EmailAlreadyExistsException | InvalidEmailException | UsernameAlreadyExistsException exception) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", exception.getMessage());
             return "redirect:/register?error=" + exception.getMessage();
