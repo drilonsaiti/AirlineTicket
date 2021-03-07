@@ -41,7 +41,7 @@ public class FlightImpl implements FlightService {
     @Override
     public Page<Flight> findPaginated(int pageNo, int pageSize, String fromSearch, String toSearch, String deptTime,String username) {
 
-        this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
+        //this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
 
         Pageable pageable = PageRequest.of(pageNo-1,pageSize);
         List<Flight> flightList = new ArrayList<>();
@@ -120,7 +120,7 @@ public class FlightImpl implements FlightService {
 
     @Override
     public void deleteExpDateAndNoAvbSeats(List<Flight> flights ) {
-        List<Flight> flightFilter = flights.stream()
+        /*List<Flight> flightFilter = flights.stream()
                 .filter(f -> !f.cantShow() || f.getTotal_seats() == 0).collect(Collectors.toList());
         for (Flight flight : flightFilter){
             Order order = this.orderRepository.findByFlightId(flight.getId());
@@ -131,7 +131,7 @@ public class FlightImpl implements FlightService {
 
             }
             this.flightRepository.delete(flight);
-        }
+        }*/
     }
 
     @Override
@@ -151,7 +151,7 @@ public class FlightImpl implements FlightService {
 
     @Override
     public List<Flight> listByFromAndToAndDeptTime(String fromSearch, String toSearch, String deptSearch,Pageable pageable ) {
-        this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
+        //this.deleteExpDateAndNoAvbSeats(this.flightRepository.findAll());
 
         String fromLike = "%" + fromSearch + "%";
         String toLike = "%" + toSearch + "%";

@@ -75,7 +75,7 @@
                     <li><a href="/contact">Contact</a></li>
                     <li  sec:authorize="isAuthenticated()">
                         <i class="fa fa-user"></i>
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="/profile">
                             <th:block th:if="${#request.getRemoteUser() != null}"
                                       th:text="${#request.getRemoteUser()}"></th:block>
                         </a>
@@ -177,13 +177,6 @@
                                 <button type="submit" class="btn btn-success" ><i class="fa fa-shopping-cart">Buy</i>
                                 </button>
                             </form>
-                            </div>
-                            <div th:if="${flight.cantShow() != true}" sec:authorize="hasRole('ROLE_USER')">
-                                <p>Time has passed</p>
-                            </div>
-
-                            <div th:if="${flight.getTotal_seats() } == 0" sec:authorize="hasRole('ROLE_USER')">
-                                <p>no available seats</p>
                             </div>
 
                         </td>

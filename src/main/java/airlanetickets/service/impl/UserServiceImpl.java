@@ -2,10 +2,7 @@ package airlanetickets.service.impl;
 
 import airlanetickets.model.enumerations.Role;
 import airlanetickets.model.User;
-import airlanetickets.model.exceptions.EmailAlreadyExistsException;
-import airlanetickets.model.exceptions.InvalidUsernameOrPasswordException;
-import airlanetickets.model.exceptions.PasswordsDoNotMatchException;
-import airlanetickets.model.exceptions.UsernameAlreadyExistsException;
+import airlanetickets.model.exceptions.*;
 import airlanetickets.repository.UserRepository;
 import airlanetickets.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,6 +34,8 @@ public class UserServiceImpl implements UserService {
             throw new PasswordsDoNotMatchException();
         if(this.userRepository.findByUsername(username).isPresent())
             throw new UsernameAlreadyExistsException(username);
+        if(!email.contains("@"))
+            throw new InvalidEmailException("Your email need to be like example@email.com");
         if(this.userRepository.findByEmail(email).isPresent())
             throw new EmailAlreadyExistsException(email);
         User user = new User(username,passwordEncoder.encode(password),name,surname,email,role);

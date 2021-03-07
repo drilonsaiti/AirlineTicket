@@ -2,7 +2,9 @@ package airlanetickets.web;
 
 
 import airlanetickets.model.enumerations.Role;
+import airlanetickets.model.exceptions.EmailAlreadyExistsException;
 import airlanetickets.model.exceptions.InvalidArgumentsException;
+import airlanetickets.model.exceptions.InvalidEmailException;
 import airlanetickets.model.exceptions.PasswordsDoNotMatchException;
 import airlanetickets.service.AuthService;
 import airlanetickets.service.UserService;
@@ -41,11 +43,14 @@ public class RegisterController {
                            @RequestParam String name,
                            @RequestParam String surname,
                            @RequestParam String email,
-                           @RequestParam Role role) {
+                           @RequestParam Role role,
+                           Model model) {
         try {
             this.userService.register(username, password, repeatedPassword, name, surname,email,role);
             return "redirect:/login";
-        } catch (InvalidArgumentsException | PasswordsDoNotMatchException exception) {
+        } catch (InvalidArgumentsException | PasswordsDoNotMatchException | EmailAlreadyExistsException | InvalidEmailException exception) {
+            model.addAttribute("hasError", true);
+            model.addAttribute("error", exception.getMessage());
             return "redirect:/register?error=" + exception.getMessage();
         }
     }

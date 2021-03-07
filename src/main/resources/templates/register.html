@@ -133,7 +133,7 @@
 </section>
 
 <div class="container mb-4" xmlns:th="http://www.thymeleaf.org">
-    <h1 th:if="${hasError}" th:text="${error}"></h1>
+    <h1 class="text-danger" th:if="${hasError}" th:text="${error}"></h1>
 </div>
 <div class="container">
     <form class="form-signin mt-xl-5" method="post" action="/register">
@@ -142,6 +142,7 @@
             <label for="username" class="sr-only">Username</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="Username" required="" autofocus="">
         </p>
+
         <p>
             <label for="password" class="sr-only">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">

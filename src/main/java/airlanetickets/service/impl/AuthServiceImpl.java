@@ -1,12 +1,14 @@
 package airlanetickets.service.impl;
 
 import airlanetickets.model.User;
-import airlanetickets.model.exceptions.InvalidArgumentsException;
-import airlanetickets.model.exceptions.InvalidUserCredentialsException;
+import airlanetickets.model.exceptions.*;
 import airlanetickets.repository.UserRepository;
 
 import airlanetickets.service.AuthService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -24,6 +26,34 @@ public class AuthServiceImpl implements AuthService {
         }
         return userRepository.findByUsernameAndPassword(username,
                 password).orElseThrow(InvalidUserCredentialsException::new);
+    }
+
+    @Override
+    public void delete(String username) {
+        User user =  this.findByUsername(username).orElseThrow();
+
+        this.userRepository.delete(user);
+    }
+
+    @Override
+    public User update(String username, String usernameOfUser, String nameOfUser, String surnameOfUser, String emailOfUser) {
+        User user =  this.findByUsername(username).orElseThrow();
+        if(this.userRepository.findByUsername(username).isPresent())
+            throw new UsernameAlreadyExistsException(username);
+        if(this.userRepository.findByEmail(emailOfUser).isPresent())
+            throw new EmailAlreadyExistsException(emailOfUser);
+
+        user.setUsername(usernameOfUser);
+        user.setName(nameOfUser);
+        user.setSurname(surnameOfUser);
+        user.setEmail(emailOfUser);
+
+        return this.userRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return this.userRepository.findByUsername(username);
     }
 
 }

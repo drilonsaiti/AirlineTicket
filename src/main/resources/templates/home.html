@@ -59,7 +59,7 @@
                     <li><a href="/contact">Contact</a></li>
                     <li  sec:authorize="isAuthenticated()">
                         <i class="fa fa-user"></i>
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="/profile">
                             <th:block th:if="${#request.getRemoteUser() != null}"
                                       th:text="${#request.getRemoteUser()}"></th:block>
                         </a>
