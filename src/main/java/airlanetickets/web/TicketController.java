@@ -96,4 +96,11 @@ public class TicketController {
         return "redirect:/ticket-cart";
     }
 
+    @PostMapping("/ticket-cart/clear")
+    public String clear(HttpServletRequest req){
+        String username = req.getRemoteUser();
+        this.ticketService.delete(username);
+        return "redirect:/ticket-cart";
+    }
+
 }

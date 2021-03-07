@@ -25,4 +25,6 @@ public interface TicketService {
 
     void deleteByTicketAndOrderID(Ticket ticket,Long id);
 
+    void delete(String username);
+
     }

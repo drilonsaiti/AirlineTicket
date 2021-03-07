@@ -58,6 +58,12 @@ public class TicketImpl implements TicketService {
     }
 
     @Override
+    public void delete(String username) {
+        Ticket ticket = this.getActiveTicketCart(username);
+        this.ticketRepository.delete(ticket);
+    }
+
+    @Override
     public Ticket getActiveTicketCart(String username) {
         User user = this.userRepository.findByUsername(username)
                 .orElseThrow();

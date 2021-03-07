@@ -126,6 +126,12 @@
     <h2>Details of Ticket</h2>
     <div class="row">
         <div class="col-12">
+            <form th:action="@{'/ticket-cart/clear'}"
+                  th:method="POST">
+                <button type="submit" class="btn btn-sm btn-danger delete-balloon"><i
+                        class="fa fa-trash">Remove all tickets</i>
+                </button>
+            </form>
             <div class="table-responsive">
 
                 <table class="table table-striped">
