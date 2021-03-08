@@ -183,10 +183,14 @@
                        th:value="${user?.get().getEmail()}"
                        required>
             </div>
+            <button  type="submit" class="btn btn-primary">Submit</button>
+            <a type="button" class="btn btn-primary" href="/profile">Back to profile</a>
         </form>
 
     </section>
 
+    <br/>
+    <h2>Delete your account</h2>
     <form th:action="@{'/user/delete/{username}' (username=${#request.getRemoteUser()})}"
           th:method="POST">
         <button type="submit" class="btn btn-sm btn-danger "><i
