@@ -9,7 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 import java.util.Optional;
 
-
+@Repository
 public interface FlightRepository extends JpaRepository<Flight,Long> , PagingAndSortingRepository<Flight,Long> {
 
     List<Flight> findAllByFromLocationLikeAndToLocationLikeAndDeparatureTimeLike(String fromSearch, String toSearch, String deptSearch);
