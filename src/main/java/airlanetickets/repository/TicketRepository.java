@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
     Optional<Ticket> findByUserAndStatus(User user, TicketStatus status);
