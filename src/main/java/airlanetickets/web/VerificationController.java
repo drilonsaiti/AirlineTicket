@@ -28,8 +28,12 @@ public class VerificationController {
 
 
     @GetMapping("/verification")
-    public String getSearch(){
-        return "/verificationSearch";
+    public String getSearch(Model model){
+        model.addAttribute("title","Verification");
+        model.addAttribute("bodyContent","verificationSearch");
+
+        return "master-template";
+
     }
 
     @GetMapping("/verification/search")

@@ -61,10 +61,6 @@ public class PaymentController {
 
             price = flight.getFinalPrice(reservation.getClassesType()) + baggingPrice;
             flight.setFinalPrice(price);
-            //model.addAttribute("price", price);
-        }else{
-            //model.addAttribute("price", 0);
-            System.out.println("ITS NULL");
         }
 
 
@@ -78,7 +74,11 @@ public class PaymentController {
         model.addAttribute("monthValid",month);
         model.addAttribute("yearValid",year);
 
-        return "payment";
+        model.addAttribute("title","Payment");
+        model.addAttribute("bodyContent","payment");
+
+        return "master-template";
+
     }
 
     @PostMapping("/payment")

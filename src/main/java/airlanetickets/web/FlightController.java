@@ -79,7 +79,10 @@ public class FlightController {
 
         model.addAttribute("flights",flights);
 
-        return "flights";
+        model.addAttribute("title","Flight");
+        model.addAttribute("bodyContent","flights");
+
+        return "master-template";
     }
 
     @GetMapping("/flights/add")
@@ -90,8 +93,10 @@ public class FlightController {
 
         model.addAttribute("agencies",agencies);
         model.addAttribute("airplanes",airplanes);
+        model.addAttribute("title","Add flight");
+        model.addAttribute("bodyContent","add-flights");
 
-        return "add-flights";
+        return "master-template";
     }
 
     @PostMapping("/flights")
@@ -138,7 +143,10 @@ public class FlightController {
         model.addAttribute("flight",flight);
         model.addAttribute("agencies",agencies);
         model.addAttribute("airplanes",airplanes);
-        return "add-flights";
+        model.addAttribute("title","Add flight");
+        model.addAttribute("bodyContent","add-flights");
+
+        return "master-template";
     }
 
     @PostMapping("/flights/{id}/delete")

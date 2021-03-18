@@ -30,8 +30,10 @@ public class ProfileController {
         Optional<User> user = this.userService.findByUsername(username);
 
         model.addAttribute("user",user);
+        model.addAttribute("title","Profile");
+        model.addAttribute("bodyContent","profile");
 
-        return "profile";
+        return "master-template";
     }
 
    @GetMapping("/profile/settings")
@@ -42,7 +44,11 @@ public class ProfileController {
 
         model.addAttribute("user",user);
 
-        return "settings";
+       model.addAttribute("title","Settings");
+       model.addAttribute("bodyContent","settings");
+
+       return "master-template";
+
    }
 
    @PostMapping("/profile/{username}")

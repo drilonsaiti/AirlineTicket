@@ -27,14 +27,18 @@ public class AgencyController {
         List<Agency> agencies = this.agencyService.listAll();
 
         model.addAttribute("agencies", agencies);
+        model.addAttribute("title","Agencies");
+        model.addAttribute("bodyContent","agencies");
 
-        return "agencies";
+        return "master-template";
     }
 
     @GetMapping("/agencies/add")
     public String addAgencies(Model model) {
+        model.addAttribute("title","Add agency");
+        model.addAttribute("bodyContent","add-agency");
 
-        return "add-agency";
+        return "master-template";
     }
 
     @PostMapping("/agencies")
@@ -63,8 +67,11 @@ public class AgencyController {
         Agency agency = this.agencyService.findById(id);
 
         model.addAttribute("agency",agency);
+        model.addAttribute("title","Add agency");
+        model.addAttribute("bodyContent","add-agency");
 
-        return "add-agency";
+
+        return "master-template";
     }
 
     @PostMapping("/agencies/{id}/delete")

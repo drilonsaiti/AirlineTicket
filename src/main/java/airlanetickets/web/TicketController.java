@@ -49,7 +49,7 @@ public class TicketController {
         String str = (String) req.getSession().getAttribute("idFlight") == null ? "NULL" : "NOT NULL";
 
 
-        if(str.equals("NOT NULL")) {
+        if (str.equals("NOT NULL")) {
             Long idFlight = Long.valueOf((String) req.getSession().getAttribute("idFlight"));
 
 
@@ -60,50 +60,46 @@ public class TicketController {
                 reservation = this.reservationService.findById(idReservation);
             }
 
-
             double price = flight.getFinalPrice(reservation.getClassesType());
-            //model.addAttribute("price", price);
-        }else{
-            //model.addAttribute("price", 0);
-            System.out.println("ITS NULL");
         }
 
         List<Order> list = this.ticketService.listAllOrderInShoppingCart(ticket.getId());
         Collections.reverse(list);
 
         model.addAttribute("orders", list);
-        model.addAttribute("ticket",ticket);
+        model.addAttribute("ticket", ticket);
+        model.addAttribute("title", "Ticket cart");
+        model.addAttribute("bodyContent", "ticket-cart");
 
-        return "ticket-cart";
+        return "master-template";
 
     }
 
 
-
     @GetMapping("/ticket-cart/{id}/download")
-    public String getDownloadPage(@PathVariable Long id,HttpServletRequest req,Model model){
+    public String getDownloadPage(@PathVariable Long id, HttpServletRequest req, Model model) {
         String username = req.getRemoteUser();
         Ticket ticket = this.ticketService.getActiveTicketCart(username);
         int ides = Math.toIntExact(id);
 
         Order order = this.orderService.findById(id);
 
-        model.addAttribute("order",order);
-        model.addAttribute("ticket",ticket);
+        model.addAttribute("order", order);
+        model.addAttribute("ticket", ticket);
 
         return "download";
     }
 
     @PostMapping("/ticket-cart/{id}/canceled")
-    public String canceled(@PathVariable Long id,HttpServletRequest req){
+    public String canceled(@PathVariable Long id, HttpServletRequest req) {
         String username = req.getRemoteUser();
         Ticket ticket = this.ticketService.getActiveTicketCart(username);
-        this.orderService.delete(id,ticket);
+        this.orderService.delete(id, ticket);
         return "redirect:/ticket-cart";
     }
 
     @PostMapping("/ticket-cart/clear")
-    public String clear(HttpServletRequest req){
+    public String clear(HttpServletRequest req) {
         String username = req.getRemoteUser();
         this.ticketService.delete(username);
         return "redirect:/ticket-cart";

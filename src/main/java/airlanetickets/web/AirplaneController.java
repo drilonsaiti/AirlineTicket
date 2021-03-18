@@ -26,14 +26,19 @@ public class AirplaneController {
         List<Airplane> airplanes = this.airplaneService.listAll();
 
         model.addAttribute("airplanes", airplanes);
+        model.addAttribute("title","Airplanes");
+        model.addAttribute("bodyContent","airplanes");
 
-        return "airplanes";
+        return "master-template";
+
     }
 
     @GetMapping("/airplanes/add")
     public String addFlight(Model model) {
+        model.addAttribute("title","Add airplane");
+        model.addAttribute("bodyContent","add-airplane");
 
-        return "add-airplane";
+        return "master-template";
     }
 
     @PostMapping("/airplanes")
@@ -60,8 +65,10 @@ public class AirplaneController {
         Airplane plane = this.airplaneService.findById(id);
 
         model.addAttribute("plane",plane);
+        model.addAttribute("title","Add airplane");
+        model.addAttribute("bodyContent","add-airplane");
 
-        return "add-airplane";
+        return "master-template";
     }
 
     @PostMapping("/airplanes/{id}/delete")
