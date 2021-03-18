@@ -120,10 +120,12 @@
         <div >
             <label>Validation of credit card</label>
             <select name="monthfValid" id="monthfValid" onload="selectFirst()" required>
+                <option value="" SELECTED>Month</option>
                 <option th:each="month : ${monthValid}" th:value="${month}" th:text="${month}" ></option>
             </select>
 
             <select name="yearOfValid" id="yearOfValid" class="yearOfValidation" onload="selectFirst()" required>
+                <option value="" SELECTED>Year</option>
                 <option th:each="year : ${yearValid}" th:value="${year}" th:text="${year}" ></option>
             </select>
 
