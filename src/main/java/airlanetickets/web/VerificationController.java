@@ -37,13 +37,26 @@ public class VerificationController {
     }
 
     @GetMapping("/verification/search")
-    public String getDownloadPage(@RequestParam(required = false) Long idOrder, HttpServletRequest req, Model model){
+    public String getDetails(@RequestParam(required = false) Long idOrder, HttpServletRequest req, Model model){
         String username = req.getRemoteUser();
         Ticket ticket = this.ticketService.getActiveTicketCart(username);
 
         if (idOrder != null ) {
             Order order = this.orderService.findById(idOrder);
+            int baggingPrice = order.getReservation().getBaggingPrice();
 
+            if(baggingPrice == 28){
+                model.addAttribute("bag","/img/bag.png");
+                model.addAttribute("bagKG","/img/10kg.png");
+            }else if(baggingPrice == 38){
+                model.addAttribute("bag","/img/bag.png");
+                model.addAttribute("bagKG","/img/20kg.png");
+            }else if (baggingPrice == 54){
+                model.addAttribute("bag","/img/bag.png");
+                model.addAttribute("bagKG","/img/30kg.png");
+            }else{
+                model.addAttribute("bag","/img/bag.png");
+            }
             model.addAttribute("order", order);
             model.addAttribute("ticket", ticket);
         }else{

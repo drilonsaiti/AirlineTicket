@@ -16,6 +16,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    private LocalDateTime dateCreated;
 
     @ManyToOne
     Flight flight;
@@ -29,6 +30,7 @@ public class Order {
 
 
     public Order(Flight flight, Reservation reservation, Payment payment) {
+        this.dateCreated = LocalDateTime.now();
         this.flight = flight;
         this.reservation = reservation;
         this.payment = payment;

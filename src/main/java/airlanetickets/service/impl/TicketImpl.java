@@ -48,7 +48,7 @@ public class TicketImpl implements TicketService {
         if (!this.ticketRepository.findById(cartId).isPresent())
             throw new ShoppingCartNotFoundException(cartId);
         return this.ticketRepository.findById(cartId).get().getOrders().stream()
-                .sorted(Comparator.comparing(Order::getDateFromFlight).reversed().thenComparing(Order::getId).reversed()).collect(Collectors.toList());
+                .sorted(Comparator.comparing(Order::getDateCreated).reversed()).collect(Collectors.toList());
     }
 
 

@@ -64,7 +64,7 @@ public class TicketController {
         }
 
         List<Order> list = this.ticketService.listAllOrderInShoppingCart(ticket.getId());
-        Collections.reverse(list);
+        //Collections.reverse(list);
 
         model.addAttribute("orders", list);
         model.addAttribute("ticket", ticket);
@@ -83,9 +83,23 @@ public class TicketController {
         int ides = Math.toIntExact(id);
 
         Order order = this.orderService.findById(id);
+       int baggingPrice = order.getReservation().getBaggingPrice();
 
         model.addAttribute("order", order);
         model.addAttribute("ticket", ticket);
+
+         if(baggingPrice == 28){
+             model.addAttribute("bag","/img/bag.png");
+             model.addAttribute("bagKG","/img/10kg.png");
+        }else if(baggingPrice == 38){
+             model.addAttribute("bag","/img/bag.png");
+             model.addAttribute("bagKG","/img/20kg.png");
+        }else if (baggingPrice == 54){
+             model.addAttribute("bag","/img/bag.png");
+             model.addAttribute("bagKG","/img/30kg.png");
+         }else{
+             model.addAttribute("bag","/img/bag.png");
+         }
 
         return "download";
     }

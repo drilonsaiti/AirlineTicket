@@ -92,12 +92,17 @@
         .to{
             float: right;
             margin-top: -95px;
-            margin-right: 466px;
+            margin-right: 514px;
         }
         .type{
             float: right;
             margin-top: -95px;
-            margin-right: 399px;
+            margin-right: 451px;
+        }
+        .bag{
+            float: right;
+            margin-top: -287px;
+            margin-right: 62px;
         }
         .surname{
             float: right;
@@ -122,6 +127,9 @@
         }
         #pdfspace{
             margin-left: 444px;
+        }
+        .bagNokg{
+            height: 73px;
         }
 
     </style>
@@ -166,7 +174,11 @@
             <h3>Class type </h3> <p th:text="${order.getReservation().getClassesType()}"></p>
             </div>
             <h3>Normal Price</h3> <p th:text= "${order.getFlight().getPrice()} + '€' " ></p>
+            <div class="bag" th:if="${order.getFlight.getPrice() <= 50}">
+            <h3>Bagging</h3> <img class="bagNokg" th:src="${bag}"/> <img th:src="${bagKG}"/>
+            </div>
             <div class="line"></div>
+
             <h2>PASSENGER DETAILS</h2>
             <h3>Name</h3> <p th:text="${order.getReservation().getName()}"></p>
             <div class="surname">
@@ -182,7 +194,10 @@
             <h3>Full Name</h3> <p th:text="${order.getPayment().getFullName()}"></p>
             <h3>Card Number</h3> <p th:text="${order.getPayment().encodeCardNumber(order.getPayment().getCardNumber())}"></p>
             <div class="price">
-            <h3>Final Price</h3> <p th:text="${order.getFlight().getFinalPrice(order.getReservation().getClassesType())} + '€' ">
+            <h3>Final Price</h3>
+                <p th:if="${order.getFlight.getPrice() <= 50}" th:text="${order.getFlight().getFinalPrice(order.getReservation().getClassesType()) +
+                                        order.getReservation().getBaggingPrice()} + '€' ">
+                <p th:if="${order.getFlight.getPrice() > 50}" th:text="${order.getFlight().getFinalPrice(order.getReservation().getClassesType())} + '€' ">
             </div>
         </div>
     </div>

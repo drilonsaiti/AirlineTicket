@@ -70,6 +70,8 @@
             filter: brightness(1.2) grayscale(.5) opacity(.9);
         }
 
+
+
     </style>
 </head>
 <body>
@@ -453,7 +455,15 @@
 
         <br/>
         <div th:if="${flight.getFinalPrices() <= 50 && flight.getPrice() <= 50}" class="text-center" height="500px">
+            <div class="text-center">
+                <h3>1 FREE CARRY-ON BAG</h3>
+                <H3>ON BOARD</H3>
+                <img style="height: 133px" src="/img/bag.png"/>
+                <p>Because the price of your ticket is 50 euros or less then you are only allowed with a backpack.
+                    If you want a larger baggage then select below.</p>
+            </div>
             <label class="text-center">Checked-in baggage</label>
+
             <div class="cc-selector">
 
                 <input id="bagging10" type="radio" name="bagging" value="28" />
