@@ -47,8 +47,10 @@ public class ReservationController {
         model.addAttribute("reservation",reservation);
         model.addAttribute("flight",flight);
         model.addAttribute("classesTypes",classesTypes);
+        model.addAttribute("title","reservation");
+        model.addAttribute("bodyContent","reservation");
 
-        return "reservation";
+        return "master-template";
     }
 
     @PostMapping("/reservation")
