@@ -1,10 +1,7 @@
 package airlanetickets.web;
 
 
-import airlanetickets.model.Agency;
-import airlanetickets.model.Airplane;
-import airlanetickets.model.Flight;
-import airlanetickets.model.Ticket;
+import airlanetickets.model.*;
 import airlanetickets.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -30,14 +27,17 @@ public class FlightController {
 
     private final TicketService ticketService;
 
+    private final OrderService orderService;
 
 
-    public FlightController(FlightService flightService, AgencyService agencyService, AirplaneService airplaneService, ReservationService reservationService, TicketService ticketService) {
+
+    public FlightController(FlightService flightService, AgencyService agencyService, AirplaneService airplaneService, ReservationService reservationService, TicketService ticketService, OrderService orderService) {
         this.flightService = flightService;
         this.agencyService = agencyService;
         this.airplaneService = airplaneService;
         this.reservationService = reservationService;
         this.ticketService = ticketService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/flights")
@@ -67,7 +67,7 @@ public class FlightController {
 
 
         List<Flight> flights = page.getContent();
-
+        List<Order> orders = this.orderService.findAll();
 
         model.addAttribute("currentPage",pageNo);
         model.addAttribute("totalPages",page.getTotalPages());
@@ -75,7 +75,7 @@ public class FlightController {
         model.addAttribute("fromSearch", fromSearch);
         model.addAttribute("toSearch", toSearch);
         model.addAttribute("deptSearch", deptSearch);
-
+        model.addAttribute("orders", orders);
 
         model.addAttribute("flights",flights);
 

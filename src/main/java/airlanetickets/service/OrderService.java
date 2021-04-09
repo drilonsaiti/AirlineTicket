@@ -16,6 +16,8 @@ public interface OrderService {
 
    Order delete(Long id, Ticket ticekt);
 
+   List<Order> findAll();
+
 
 
 }

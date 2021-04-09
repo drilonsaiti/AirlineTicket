@@ -10,6 +10,7 @@ import airlanetickets.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,6 +64,11 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository.delete(order);
 
         return order;
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return this.orderRepository.findAll();
     }
 
 }

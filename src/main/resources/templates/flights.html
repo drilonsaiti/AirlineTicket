@@ -58,8 +58,11 @@
 
                         <input id="idFlight" type="hidden" th:name="idFlight" th:value="${flight.getId()}">
                         <td>
+
                             <form th:action="@{'/flights/{id}/delete' (id=${flight.getId()})}"
-                                  th:method="POST" sec:authorize="hasRole('ROLE_ADMIN')">
+                                  th:method="POST" sec:authorize="hasRole('ROLE_ADMIN')" >
+                                <p style="font-size: 12.1px;color:red;" th:each="order : ${orders}" th:if="${flight.getId() == order.getFlight().getId()}">This flight is in cart can't delete </p>
+
                                 <button type="submit" class="btn btn-sm btn-danger delete-balloon"><i
                                         class="fa fa-trash">Delete</i>
                                 </button>

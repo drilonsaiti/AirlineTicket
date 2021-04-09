@@ -2,6 +2,7 @@ package airlanetickets.model;
 
 
 import airlanetickets.model.enumerations.ClassesType;
+import airlanetickets.service.OrderService;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -112,6 +113,7 @@ public class Flight {
     public void setTotalSeatsPlus(int takeSeats){
         this.total_seats = this.total_seats + takeSeats;
     }
+
 
 
 }
