@@ -84,7 +84,7 @@ public class FlightImpl implements FlightService {
         Agency agency = this.agencyRepository.findById(agencyId).orElseThrow();
         Airplane airplane = this.airplaneRepository.findById(airplaneId).orElseThrow();
 
-        Flight flight = new Flight(departureFrom,departureTo,departureTime,arrivalTime,duration,price,seats,agency,airplane);
+        Flight flight = new Flight(departureFrom,departureTo,departureTime,arrivalTime,duration,seats,price,agency,airplane);
 
         return this.flightRepository.save(flight);
     }
