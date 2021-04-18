@@ -27,6 +27,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //Web resources
+        web.ignoring().antMatchers("/resources/**");
+        web.ignoring().antMatchers("resources/**");
+
         web.ignoring().antMatchers("/css/**");
         web.ignoring().antMatchers("/scripts/**");
         web.ignoring().antMatchers("/js/**");
@@ -39,6 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("css/**");
         web.ignoring().antMatchers("js/**");
         web.ignoring().antMatchers("js/vendor/**");
+        web.ignoring().antMatchers("/js/vendor/**");
+        web.ignoring().antMatchers("/doc/**");
 
         web.ignoring().antMatchers("fonts/**");
         web.ignoring().antMatchers("scss/**");
@@ -52,10 +57,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/doc/css/**");
         web.ignoring().antMatchers("doc/fonts/**");
         web.ignoring().antMatchers("doc/img/**");
+        web.ignoring().antMatchers("/doc/img/**");
         web.ignoring().antMatchers("doc/js/**");
         web.ignoring().antMatchers("doc/syntax-highlighter/**");
 
         web.ignoring().antMatchers("scripts/**");
+        web.ignoring().antMatchers("/scripts/**");
 
     }
 
@@ -66,7 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/static/**", "/css/**",
+                .antMatchers("/resources/**", "/static/**", "/css/**","/doc/**","/resources/**",
                         "/js/**", "/img/**","/vendor/**","img/**","/fonts/**","/scss/**","/Travel - Doc/**", "/assets/**","/api/**","pdflogo.png","/doc/**","doc/**").permitAll()
                 .antMatchers("/flights/**","/home","/","/register","**/resources/**").permitAll()
                 .antMatchers("/resources/**").permitAll()

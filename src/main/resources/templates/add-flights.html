@@ -23,7 +23,7 @@
                            class="form-control"
                            id="departureFrom"
                            name="departureFrom"
-                           th:value="${flight?.getFrom_location()}"
+                           th:value="${flight?.getFromLocation()}"
                            required
                            placeholder="Enter departure from">
                 </div>
@@ -34,7 +34,7 @@
                            class="form-control"
                            id="departureTo"
                            name="departureTo"
-                           th:value="${flight?.getTo_location()}"
+                           th:value="${flight?.getToLocation()}"
                            required
                            placeholder="Enter departure to">
                 </div>
@@ -45,7 +45,7 @@
                            class="form-control"
                            id="departureTime"
                            name="departureTime"
-                           th:value="${flight?.getDeparature_time()}"
+                           th:value="${flight?.getDeparatureTime()}"
                            required
                            placeholder="Enter departure time">
                 </div>
