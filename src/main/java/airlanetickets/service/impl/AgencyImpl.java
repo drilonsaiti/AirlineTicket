@@ -4,6 +4,10 @@ import airlanetickets.model.Agency;
 import airlanetickets.model.exceptions.InvalidAgencyIdException;
 import airlanetickets.repository.AgencyRepository;
 import airlanetickets.service.AgencyService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +26,17 @@ public class AgencyImpl implements AgencyService {
     @Override
     public List<Agency> listAll() {
         return this.agencyRepository.findAll();
+    }
+
+    @Override
+    public Page<Agency> findPaginated(int pageNo, int pageSize, String sortField, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+
+        return this.agencyRepository.findAll(pageable);
     }
 
     @Override

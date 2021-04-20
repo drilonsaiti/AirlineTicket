@@ -4,6 +4,7 @@ import airlanetickets.model.Agency;
 import airlanetickets.model.Airplane;
 import airlanetickets.model.Flight;
 import airlanetickets.service.AgencyService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +23,29 @@ public class AgencyController {
         this.agencyService = agencyService;
     }
 
+
     @GetMapping("/agencies")
-    public String getAgency(Model model) {
-        List<Agency> agencies = this.agencyService.listAll();
+    public String viewAgency(Model model){
+        return findPagianted(model,1,"nameOfAgency","asc");
+    }
+
+    @GetMapping("/agencies/page/{pageNo}")
+    public String findPagianted(Model model,
+                            @PathVariable(value = "pageNo") int pageNo,
+                            @RequestParam("sortField") String sortFiled,
+                            @RequestParam("sortDir") String sortDir) {
+        int pageSize = 4;
+        Page<Agency> page = this.agencyService.findPaginated(pageNo,pageSize,sortFiled,sortDir);
+        List<Agency> agencies = page.getContent();
+
+        model.addAttribute("currentPage",pageNo);
+        model.addAttribute("totalPages",page.getTotalPages());
+        model.addAttribute("totalItems",page.getTotalElements());
+
+        model.addAttribute("sortField",sortFiled);
+        model.addAttribute("sortDir",sortDir);
+        String reverseSortdir = sortDir.equals("asc") ? "desc" : "asc";
+        model.addAttribute("reverseSortDir", reverseSortdir);
 
         model.addAttribute("agencies", agencies);
         model.addAttribute("title","Agencies");
